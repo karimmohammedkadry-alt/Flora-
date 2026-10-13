@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="icon" type="image/png" href="../assets/logo.png">
+  <title>Flora Admin Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section id="loginView" class="login-card">
+      <div class="login-brand"><span class="brand-mark">FLORA</span><span>FASHION HIJAB</span></div>
+      <h1 id="loginHeading">تسجيل دخول الإدارة</h1>
+      <p id="loginIntro">اكتب اسم المستخدم وكلمة المرور المرتبطين بحساب الإدارة في Supabase.</p>
+      <div class="login-mode-actions">
+        <button id="showLoginBtn" class="ghost" type="button">تسجيل الدخول</button>
+        <button id="showSetupBtn" class="primary" type="button">إنشاء الحساب لأول مرة</button>
+      </div>
+      <form id="loginForm">
+        <label>اسم المستخدم<input id="loginUsername" type="text" autocomplete="username" required minlength="3" maxlength="64" placeholder="اسم المستخدم"></label>
+        <label>كلمة المرور<input id="loginPassword" type="password" autocomplete="current-password" required minlength="8" placeholder="كلمة مرور الحساب"></label>
+        <button id="loginSubmit" class="primary login-submit" type="submit">تسجيل الدخول</button>
+      </form>
+      <form id="firstSetupForm" hidden>
+        <p class="account-note">إنشاء الحساب لأول مرة لا يحتاج OTP. استخدم رمز الإعداد المؤقت الذي تضبطه في أسرار Edge Function، وبعد إنشاء الحساب احذف الرمز من الخادم.</p>
+        <label>البريد المخصص للإدارة<input type="email" value="karimmohammedkadry@gmail.com" readonly></label>
+        <label>رمز الإعداد المؤقت<input id="setupSecret" type="password" autocomplete="off" required minlength="24" placeholder="رمز سري من الخادم"></label>
+        <label>اسم المستخدم<input id="setupUsername" type="text" autocomplete="username" required minlength="3" maxlength="64" placeholder="اختار اسم المستخدم"></label>
+        <label>كلمة المرور<input id="setupPassword" type="password" autocomplete="new-password" required minlength="12" maxlength="128" placeholder="12 حرفًا على الأقل"></label>
+        <label>تأكيد كلمة المرور<input id="setupPasswordConfirm" type="password" autocomplete="new-password" required minlength="12" maxlength="128" placeholder="اكتب كلمة المرور مرة تانية"></label>
+        <button id="finishSetup" class="primary login-submit" type="button">إنشاء حساب الإدارة</button>
+      </form>
+      <p id="loginError" class="login-error" role="alert" hidden></p>
+      <p id="setupStatus" class="account-note" role="status" hidden></p>
+      <small>تسجيل الدخول وتغيير كلمة المرور بيتموا من خلال Supabase Auth، من غير تخزين الباسورد في ملفات الموقع.</small>
+    </section>
+    <section id="dashboardView" hidden>
+      <header class="topbar">
+        <div><span class="brand-mark small">FLORA</span><strong>لوحة التحكم</strong></div>
+        <div class="top-actions"><span id="adminIdentity">جلسة إدارة موثقة</span><button id="enableOrderAlerts" class="ghost" type="button">🔔 تفعيل تنبيهات الطلبات</button><button id="logoutBtn" class="ghost">تسجيل الخروج</button></div>
+      </header>
+
+      <nav class="tabs" aria-label="أقسام لوحة التحكم">
+        <button class="tab active" data-section="overview">نظرة عامة</button>
+        <button class="tab" data-section="products">المنتجات</button>
+        <button class="tab" data-section="orders">الطلبات</button>
+        <button class="tab" data-section="messages">الرسائل</button>
+        <button class="tab" data-section="account">الحساب والأمان</button>
+      </nav>
+
+      <div id="toastRoot" class="toast-root" aria-live="polite"></div>
+
+      <section id="overview" class="section active">
+        <div class="stats">
+          <article><span>إجمالي المنتجات</span><strong id="statProducts">0</strong></article>
+          <article><span>المنتجات النشطة</span><strong id="statActive">0</strong></article>
+          <article><span>طلبات اليوم</span><strong id="statToday">0</strong></article>
+          <article><span>طلبات قيد التنفيذ</span><strong id="statPending">0</strong></article>
+          <article><span>إجمالي المبيعات</span><strong id="statSales">0 ج.م</strong></article>
+          <article><span>رسائل جديدة</span><strong id="statMessages">0</strong></article>
+        </div>
+        <div class="panel"><div class="panel-head"><h2>آخر الطلبات</h2><button class="ghost" data-go="orders">عرض الكل</button></div><div id="recentOrders" class="table-wrap"></div></div>
+      </section>
+
+      <section id="products" class="section" hidden>
+        <div class="panel-head"><div><h2>المنتجات</h2><p>إدارة السعر والمخزون والظهور في المتجر.</p></div><button id="newProductBtn" class="primary">+ إضافة منتج</button></div>
+        <div class="toolbar"><input id="productSearch" placeholder="بحث بالاسم أو التصنيف"><select id="productFilter"><option value="all">كل المنتجات</option><option value="active">نشطة</option><option value="inactive">غير نشطة</option><option value="low">مخزون منخفض</option></select></div>
+        <div id="productsTable" class="table-wrap"></div>
+      </section>
+
+      <section id="orders" class="section" hidden>
+        <div class="panel-head"><div><h2>الطلبات</h2><p>تابع حالة الطلب وتفاصيل العميل والمنتجات.</p></div></div>
+        <div class="toolbar"><input id="orderSearch" placeholder="رقم الطلب أو اسم العميل أو الهاتف"><select id="orderFilter"><option value="all">كل الحالات</option><option value="pending">جديد</option><option value="confirmed">مؤكد</option><option value="preparing">جاري التجهيز</option><option value="shipping">قيد الشحن</option><option value="delivered">تم التسليم</option><option value="cancelled">ملغي</option></select></div>
+        <div id="ordersTable" class="table-wrap"></div>
+      </section>
+
+      <section id="messages" class="section" hidden>
+        <div class="panel-head"><div><h2>رسائل العملاء</h2><p>راجع رسائل التواصل وحدد حالتها.</p></div></div>
+        <div class="toolbar"><select id="messageFilter"><option value="all">كل الرسائل</option><option value="new">جديدة</option><option value="read">مقروءة</option><option value="resolved">تم الحل</option></select></div>
+        <div id="messagesTable" class="table-wrap"></div>
+      </section>
+
+      <section id="account" class="section" hidden>
+        <div class="panel-head"><div><h2>الحساب والأمان</h2><p>غيّر اسم المستخدم أو كلمة المرور من هنا، من غير تعديل أي كود.</p></div></div>
+        <div class="panel account-panel">
+          <p class="account-note">للتأكيد، اكتب كلمة المرور الحالية. اترك أي حقل تغيير لا تريد تعديله فارغًا.</p>
+          <form id="accountForm" class="form-grid two">
+            <label class="wide">كلمة المرور الحالية<input id="accountCurrentPassword" type="password" autocomplete="current-password" required minlength="8" placeholder="للتأكد من هويتك"></label>
+            <label>اسم المستخدم الجديد<input id="accountNewUsername" type="text" autocomplete="username" minlength="3" maxlength="64" placeholder="اتركه فارغًا لو مش هتغيّره"></label>
+            <label>كلمة المرور الجديدة<input id="accountNewPassword" type="password" autocomplete="new-password" minlength="8" maxlength="128" placeholder="8 أحرف على الأقل"></label>
+            <div class="wide account-actions"><button id="accountSave" class="primary" type="submit">حفظ التغييرات</button><span id="accountHint" role="status"></span></div>
+          </form>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <dialog id="productDialog">
+    <form id="productForm" method="dialog" class="dialog-card">
+      <div class="panel-head"><h2 id="productDialogTitle">إضافة منتج</h2><button type="button" class="icon-btn" data-close="productDialog">×</button></div>
+      <input id="productId" type="hidden">
+      <div class="form-grid two">
+        <label>اسم المنتج<input id="pName" required></label>
+        <label>التصنيف<input id="pCategory" required></label>
+        <label>السعر (ج.م)<input id="pPrice" type="number" min="0" step="0.01" required></label>
+        <label>المخزون<input id="pStock" type="number" min="0" step="1" required></label>
+        <label>اسم اللون<input id="pColorName" required></label>
+        <label>كود اللون<input id="pColorHex" placeholder="#000000"></label>
+        <label>Group Key<input id="pGroupKey" required></label>
+        <label>ترتيب العرض<input id="pSort" type="number" step="1" value="0"></label>
+        <label class="wide">رابط/مسار الصورة<input id="pImage" placeholder="assets/product-1.jpg"></label>
+        <label class="wide">الوصف<textarea id="pDescription" rows="4"></textarea></label>
+        <label class="check"><input id="pActive" type="checkbox" checked> نشط</label>
+        <label class="check"><input id="pFeatured" type="checkbox"> مميز</label>
+      </div>
+      <div class="dialog-actions"><button type="button" class="ghost" data-close="productDialog">إلغاء</button><button class="primary" type="submit">حفظ المنتج</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="orderDialog"><div class="dialog-card"><div class="panel-head"><h2>تفاصيل الطلب</h2><button class="icon-btn" data-close="orderDialog">×</button></div><div id="orderDetails"></div></div></dialog>
+  <dialog id="messageDialog"><div class="dialog-card"><div class="panel-head"><h2>رسالة العميل</h2><button class="icon-btn" data-close="messageDialog">×</button></div><div id="messageDetails"></div></div></dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-config.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /supabase/
+Disallow: /PHASE_2_DASHBOARD_CONTRACT.md
+Disallow: /STAGE_*
+Disallow: /RELEASE_MANIFEST.md

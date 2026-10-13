@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>حسابي | Flora Fashion Hijab</title><meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="../css/common.css"><link rel="stylesheet" href="../css/account.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../js/supabase-config.js"></script><script src="../js/production-config.js"></script>
+</head><body>
+<header class="site-header"><div class="container header-content"><a class="logo" href="home.html"><img src="../assets/logo.png" alt="Flora Fashion Hijab"></a><nav class="main-nav"><a href="home.html">الرئيسية</a><a href="shop.html">المتجر</a><a href="orders.html">طلباتي</a><a class="active" href="account.html">حسابي</a></nav><a class="account-back" href="cart.html">السلة ←</a></div></header>
+<main class="account-page"><section class="account-card">
+<div class="account-brand"><img src="../assets/logo.png" alt=""><span>FLORA FASHION HIJAB</span></div>
+<div class="account-symbol" aria-hidden="true">✉</div>
+<div id="accountFormView"><p class="eyebrow">حسابك في فلورا</p><h1 id="accountTitle">أهلًا بيك من جديد</h1><p class="account-lead" id="accountIntro">سجّل دخولك ببريدك الإلكتروني، من غير كلمة مرور.</p>
+<div class="account-tabs"><button type="button" id="loginMode" class="active">تسجيل الدخول</button><button type="button" id="registerMode">إنشاء حساب</button></div>
+<form id="accountForm" novalidate><label for="accountEmail">البريد الإلكتروني</label><input id="accountEmail" type="email" placeholder="name@example.com" autocomplete="email" required><button id="sendAccountOtp" class="account-primary" type="submit"><span>إرسال رمز التحقق</span><b>←</b></button></form>
+<div class="otp-panel" id="accountOtpPanel" hidden><div class="otp-icon">✦</div><h2>اكتب رمز التحقق</h2><p>بعتنا رمز مكوّن من 6 أرقام على <strong id="otpEmailLabel"></strong></p><div class="otp-digits" id="accountOtpDigits" dir="ltr" aria-label="رمز التحقق"><input inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="الرقم الأول"><input inputmode="numeric" maxlength="1" aria-label="الرقم الثاني"><input inputmode="numeric" maxlength="1" aria-label="الرقم الثالث"><input inputmode="numeric" maxlength="1" aria-label="الرقم الرابع"><input inputmode="numeric" maxlength="1" aria-label="الرقم الخامس"><input inputmode="numeric" maxlength="1" aria-label="الرقم السادس"></div><button type="button" id="verifyAccountOtp" class="account-primary">تأكيد الرمز والمتابعة <b>✓</b></button><button type="button" id="resendAccountOtp" class="text-button">إعادة إرسال الرمز</button><button type="button" id="changeAccountEmail" class="text-button muted">تغيير البريد الإلكتروني</button></div>
+<p id="accountMessage" class="account-message" role="status" aria-live="polite"></p><div class="account-secure"><span>🔒</span> رمز مؤقت لحماية حسابك — لا تشاركه مع أي شخص.</div>
+</div>
+<div id="accountLoggedIn" hidden><div class="logged-check">✓</div><h1>حسابك جاهز 🌿</h1><p class="account-lead">تم تأكيد بريدك الإلكتروني بنجاح.</p><p class="signed-email" id="signedEmail"></p><a class="account-primary link-button" href="orders.html">عرض طلباتي ←</a><a class="text-button" href="shop.html">متابعة التسوق</a><button id="accountSignOut" class="text-button muted" type="button">تسجيل الخروج</button></div>
+</section><p class="account-footer">أناقة بسيطة تبدأ من اختيارك <span>•</span> Flora Fashion Hijab</p></main>
+<script src="../js/ui.js"></script><script src="../js/common.js"></script><script src="../js/account.js"></script>
+</body></html>

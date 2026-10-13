@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>اتصل بنا | Flora Fashion Hijab</title>
+<meta name="robots" content="index,follow">
+<meta name="description" content="تواصل مع Flora Fashion Hijab للاستفسارات والمساعدة بخصوص المنتجات والطلبات.">
+<link href="../css/common.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase-config.js"></script>
+<script src="../js/production-config.js"></script>
+<link href="../css/contact.css" rel="stylesheet"/>
+</head>
+<body>
+<header class="site-header">
+<div class="container header-content">
+<a class="logo" href="home.html"><img alt="Flora Fashion Hijab" src="../assets/logo.png"/></a>
+<nav class="main-nav"><a href="home.html">الرئيسية</a>
+<a href="shop.html">المتجر</a>
+<a href="about.html">من نحن</a>
+<a class="active" href="contact.html">اتصل بنا</a>
+<a href="orders.html">طلباتي</a>
+<a href="account.html">حسابي</a>
+</nav>
+<a aria-label="السلة" class="cart-link" href="cart.html">🛒  <span class="cart-count" data-cart-count="0">0</span></a>
+</div>
+</header>
+<main class="page"><div class="container">
+<div class="heading"><span>FLORA SUPPORT</span><h1>اتصل بنا</h1><p>لو عندك استفسار عن المنتجات أو الطلب، ابعت لنا رسالتك.</p></div>
+<div class="contact-grid">
+<section class="card"><div class="contact-item"><span>المتجر</span><strong>Flora Fashion Hijab</strong></div><div class="contact-item"><span>الخدمة</span><strong>استفسارات المنتجات والطلبات</strong></div><div class="contact-item"><span>الرد</span><strong>من خلال نموذج التواصل</strong></div></section>
+<section class="card"><form id="contactForm"><div class="form-grid"><div class="form-group"><label for="contactName">الاسم</label><input id="contactName" minlength="2" placeholder="اكتب اسمك" required=""/></div><div class="form-group"><label for="contactPhone">رقم الهاتف</label><input id="contactPhone" inputmode="tel" placeholder="01xxxxxxxxx"/></div><div class="form-group full"><label for="contactMessage">الرسالة</label><textarea id="contactMessage" minlength="5" placeholder="اكتب استفسارك" required=""></textarea></div></div><button class="submit" type="submit">إرسال الرسالة</button><div class="message" id="contactMessageBox"></div></form></section>
+</div></div></main>
+<footer class="footer">© 2026 Flora Fashion Hijab — جميع الحقوق محفوظة</footer>
+<script src="../js/ui.js"></script>
+<script src="../js/common.js"></script><script src="../js/contact.js"></script>
+</body>
+</html>
