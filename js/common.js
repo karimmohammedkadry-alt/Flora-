@@ -108,6 +108,16 @@
   };
 
   document.addEventListener("DOMContentLoaded", () => {
+    // Keep the same active/hover navigation treatment on every page.
+    const currentFile = (window.location.pathname.split("/").pop() || "home.html").toLowerCase();
+    document.querySelectorAll(".site-header .main-nav a[href]").forEach(link => {
+      try {
+        const linkFile = new URL(link.href, window.location.href).pathname.split("/").pop().toLowerCase();
+        const isActive = linkFile === currentFile || ((currentFile === "index.html" || currentFile === "") && linkFile === "home.html");
+        link.classList.toggle("active", isActive);
+        if (isActive) link.setAttribute("aria-current", "page"); else link.removeAttribute("aria-current");
+      } catch (_) {}
+    });
     updateCartCount();
     document.querySelectorAll(".search-button").forEach(button => {
       button.addEventListener("click", () => {
