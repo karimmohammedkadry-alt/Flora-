@@ -1,0 +1,7 @@
+# The Edge Function performs its own authentication checks for every protected action.
+# Login and one-time bootstrap start without a Supabase access token.
+[functions.flora-admin]
+verify_jwt = false
+
+[functions.flora-order-push]
+verify_jwt = false

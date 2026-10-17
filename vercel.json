@@ -1,0 +1,71 @@
+{
+  "rewrites": [
+    {
+      "source": "/dashboard",
+      "destination": "/Dashboard/index.html"
+    },
+    {
+      "source": "/dashboard/:path*",
+      "destination": "/Dashboard/:path*"
+    },
+    {
+      "source": "/Shared/:path*",
+      "destination": "/Shared/:path*"
+    },
+    {
+      "source": "/assets/:path*",
+      "destination": "/Store/assets/:path*"
+    },
+    {
+      "source": "/css/:path*",
+      "destination": "/Store/css/:path*"
+    },
+    {
+      "source": "/js/:path*",
+      "destination": "/Store/js/:path*"
+    },
+    {
+      "source": "/pages/:path*",
+      "destination": "/Store/pages/:path*"
+    },
+    {
+      "source": "/",
+      "destination": "/Store/index.html"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/Store/:path*"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        },
+        {
+          "key": "X-DNS-Prefetch-Control",
+          "value": "off"
+        }
+      ]
+    }
+  ]
+}
