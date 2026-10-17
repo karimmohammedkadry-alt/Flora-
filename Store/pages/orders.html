@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>طلباتي | Flora Fashion Hijab</title>
+<meta name="robots" content="index,follow">
+<meta name="description" content="راجع طلباتك السابقة وحالاتها على Flora Fashion Hijab.">
+<link href="../css/common.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../Shared/supabase-config.js"></script>
+<script src="../../Shared/production-config.js"></script>
+<link href="../css/orders.css" rel="stylesheet"/>
+</head>
+<body>
+<header class="site-header">
+<div class="container header-content">
+<a class="logo" href="home.html">
+<img alt="Flora Fashion Hijab" src="../assets/logo.png"/>
+</a>
+<nav class="main-nav"><a href="home.html">الرئيسية</a>
+<a href="shop.html">المتجر</a>
+<a href="about.html">من نحن</a>
+<a href="contact.html">اتصل بنا</a>
+<a class="active" href="orders.html">طلباتي</a>
+<a href="account.html">حسابي</a>
+</nav>
+<a class="shop-button" href="shop.html">
+            متابعة التسوق
+        </a>
+</div>
+</header>
+<main class="orders-page">
+<div class="container">
+<div class="page-heading">
+<span>FLORA FASHION HIJAB</span>
+<h1>طلباتي</h1>
+<p>
+                جميع الطلبات التي قمت بإنشائها
+            </p>
+</div>
+<!-- الإحصائيات -->
+<div class="orders-stats">
+<div class="stat-card">
+<span>إجمالي الطلبات</span>
+<strong id="totalOrders">
+                    0
+                </strong>
+</div>
+<div class="stat-card">
+<span>طلبات قيد المتابعة</span>
+<strong id="pendingOrders">
+                    0
+                </strong>
+</div>
+<div class="stat-card">
+<span>إجمالي المشتريات</span>
+<strong>
+<span id="totalSpent">0</span>
+                    ج.م
+                </strong>
+</div>
+</div>
+<!-- قائمة الطلبات -->
+<section class="orders-section">
+<div class="section-heading">
+<h2>
+                    سجل الطلبات
+                </h2>
+<a href="shop.html">
+                    + إضافة منتجات
+                </a>
+</div>
+<div class="orders-list" id="ordersList"></div>
+<!-- لا توجد طلبات -->
+<div class="empty-orders hidden" id="emptyOrders">
+<div class="empty-icon">
+                    📦
+                </div>
+<h2>
+                    لا توجد طلبات حتى الآن
+                </h2>
+<p>
+                    عندما تقوم بإنشاء طلب جديد سيظهر هنا.
+                </p>
+<a class="primary-button" href="shop.html">
+                    ابدأ التسوق
+                </a>
+</div>
+</section>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container footer-content">
+<div>
+<h3>
+                Flora Fashion Hijab
+            </h3>
+<p>
+                أناقة بسيطة تبدأ من اختيارك.
+            </p>
+</div>
+<div class="footer-links">
+<a href="home.html">
+                الرئيسية
+            </a>
+<a href="shop.html">
+                المتجر
+            </a>
+<a href="cart.html">
+                السلة
+            </a>
+</div>
+</div>
+<div class="footer-bottom">
+        © 2026 Flora Fashion Hijab
+    </div>
+</footer>
+<script src="../js/ui.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/orders.js"></script>
+</body>
+</html>

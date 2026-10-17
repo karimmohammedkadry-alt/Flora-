@@ -1,0 +1,25 @@
+إصلاح خطأ Gradle الأخير
+======================
+
+الخطأ الذي ظهر عندك سببه إعداد Kotlin داخل android/app/build.gradle.kts:
+الكائن kotlin { compilerOptions { jvmTarget ... } } غير معروف في إعداد المشروع الحالي.
+أضفنا سكربت إصلاح يأخذ نسخة احتياطية من build.gradle.kts ثم يضبط هدف Java/Kotlin على 17 بالطريقة المتوافقة مع إعداد Flutter Gradle المعتاد، ويتأكد من تطابق Firebase package ID.
+
+الخطوات:
+1) فك الضغط عن المشروع كاملًا.
+2) افتح PowerShell داخل مجلد AdminApp، أو شغّل repair_android_gradle.cmd بالنقر المزدوج.
+   ملف CMD يشغّل PowerShell مع ExecutionPolicy Bypass لهذه العملية فقط، لحل رسالة منع تشغيل ملفات .ps1.
+3) بعد انتهاء الإصلاح، نفّذ من داخل AdminApp:
+   flutter clean
+   flutter pub get
+   flutter analyze
+   flutter build apk --release
+4) مكان APK المتوقع عند نجاح البناء:
+   build\app\outputs\flutter-apk\app-release.apk
+
+تنبيهات:
+- السكربت يعمل فقط على build.gradle.kts، ويتوقف إذا كان المشروع يستخدم build.gradle بنمط Groovy.
+- تُحفظ نسخة احتياطية من الملف قبل استبداله.
+- لا يحذف السكربت Android SDK أو NDK أو ملفات بياناتك.
+- لا يمكن اعتبار APK جاهزًا قبل نجاح أوامر Flutter على جهازك؛ بيئة هذه المراجعة لا تحتوي على Flutter SDK.
+- ملف google-services.json الموجود بالمشروع خاص بإعداد Firebase. لا ترفع نسخة المشروع علنًا دون مراجعة إعدادات/سياسات Firebase.

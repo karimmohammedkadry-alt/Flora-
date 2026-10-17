@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>حسابي | Flora Fashion Hijab</title><meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="../css/common.css"><link rel="stylesheet" href="../css/account.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../../Shared/supabase-config.js"></script><script src="../../Shared/production-config.js"></script>
+</head><body>
+<header class="site-header"><div class="container header-content"><a class="logo" href="home.html"><img src="../assets/logo.png" alt="Flora Fashion Hijab"></a><nav class="main-nav"><a href="home.html">الرئيسية</a><a href="shop.html">المتجر</a><a href="orders.html">طلباتي</a><a class="active" href="account.html">حسابي</a></nav><a class="account-back" href="cart.html">السلة ←</a></div></header>
+<main class="account-page"><section class="account-card">
+<div class="account-brand"><img src="../assets/logo.png" alt=""><span>FLORA FASHION HIJAB</span></div>
+
+<div id="accountFormView"><p class="eyebrow">حسابك في فلورا</p><h1 id="accountTitle">أهلًا بيك من جديد</h1><p class="account-lead" id="accountIntro">سجّل دخولك باسمك ورقم موبايلك وكلمة المرور.</p>
+<div class="account-tabs"><button type="button" id="loginMode" class="active">تسجيل الدخول</button><button type="button" id="registerMode">إنشاء حساب</button></div>
+<form id="accountForm" novalidate>
+<label for="accountFullName" id="accountNameLabel" hidden>الاسم بالكامل</label><input id="accountFullName" type="text" placeholder="الاسم بالكامل" autocomplete="name" hidden>
+<label for="accountPhone">رقم الموبايل</label><input id="accountPhone" type="tel" placeholder="01xxxxxxxxx" autocomplete="tel" inputmode="tel" required>
+<label for="accountPassword">كلمة المرور</label><input id="accountPassword" type="password" placeholder="كلمة المرور" autocomplete="current-password" minlength="8" maxlength="128" required>
+<label for="accountPasswordConfirm" id="accountPasswordConfirmLabel" hidden>تأكيد كلمة المرور</label><input id="accountPasswordConfirm" type="password" placeholder="أكد كلمة المرور" autocomplete="new-password" minlength="8" maxlength="128" hidden>
+<button id="accountSubmit" class="account-primary" type="submit"><span>تسجيل الدخول</span><b>←</b></button></form>
+<p id="accountMessage" class="account-message" role="status" aria-live="polite"></p><div class="account-secure"><span>🔒</span> بياناتك محمية، وكلمة المرور لا تُخزّن في ملفات الموقع.</div>
+</div>
+<div id="accountLoggedIn" hidden><div class="logged-check">✓</div><h1>حسابك جاهز 🌿</h1><p class="account-lead">تم تسجيل دخولك بنجاح.</p><p class="signed-email" id="signedEmail"></p><a class="account-primary link-button" href="orders.html">عرض طلباتي ←</a><a class="text-button" href="shop.html">متابعة التسوق</a><button id="accountSignOut" class="text-button muted" type="button">تسجيل الخروج</button></div>
+</section><p class="account-footer">أناقة بسيطة تبدأ من اختيارك <span>•</span> Flora Fashion Hijab</p></main>
+<script src="../js/ui.js"></script><script src="../js/common.js"></script><script src="../js/account.js"></script>
+</body></html>

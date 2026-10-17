@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "705291849357",
+    "project_id": "flora-a741e",
+    "storage_bucket": "flora-a741e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:705291849357:android:127d6a1ea04a6629e55cc4",
+        "android_client_info": {
+          "package_name": "com.florafashionhijab.admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTHURmS9s8PKVow1kp_SxCDYf28il4mtA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

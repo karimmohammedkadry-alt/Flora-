@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Flora Fashion Hijab | حجاب وموضة</title>
+<meta name="robots" content="index,follow">
+<meta name="description" content="تسوق منتجات Flora Fashion Hijab واكتشف تشكيلتنا من الحجاب والأزياء.">
+<!-- Home CSS -->
+<link href="../css/common.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../Shared/supabase-config.js"></script>
+<script src="../../Shared/production-config.js"></script>
+<link href="../css/home.css" rel="stylesheet"/>
+</head>
+<body>
+<!-- ================= HEADER ================= -->
+<header class="header">
+<!-- Logo -->
+<a class="logo" href="home.html">
+<img alt="Flora Fashion Hijab" src="../assets/logo.png"/>
+</a>
+<!-- Navigation -->
+<nav class="navigation"><a class="active" href="home.html">الرئيسية</a>
+<a href="shop.html">المتجر</a>
+<a href="about.html">من نحن</a>
+<a href="contact.html">اتصل بنا</a>
+<a href="orders.html">طلباتي</a>
+<a href="account.html">حسابي</a>
+</nav>
+<!-- Header Actions -->
+<div class="header-actions">
+<button aria-label="بحث" class="search-button" type="button">
+                ⌕
+            </button>
+<a aria-label="سلة المشتريات" class="cart-button" href="cart.html">
+                🛒
+                
+ <span class="cart-count" data-cart-count="0">0</span></a>
+</div>
+</header>
+<!-- ================= MAIN ================= -->
+<main>
+<!-- ================= HERO ================= -->
+<section class="hero">
+<div class="hero-content">
+<span class="hero-label">
+                    FLORA FASHION HIJAB
+                </span>
+<h1>
+                    أناقة تبدأ<br/>
+                    من حجابك
+                </h1>
+<p>
+                    اكتشفي مجموعتنا من الحجاب المختار
+                    بعناية لإطلالة بسيطة وأنيقة كل يوم.
+                </p>
+<a class="primary-button" href="shop.html">
+                    اكتشفي المجموعة
+                </a>
+</div>
+<div class="hero-image">
+<img alt="Flora Fashion Hijab" src="../assets/hero.jpg"/>
+</div>
+</section>
+
+<!-- ================= TRUST STRIP ================= -->
+<section class="trust-strip" aria-label="مميزات Flora">
+  <div class="trust-item">
+    <span class="trust-icon">✓</span>
+    <div><strong>اختيارات مختارة</strong><small>خامات وألوان بعناية</small></div>
+  </div>
+  <div class="trust-item">
+    <span class="trust-icon">↗</span>
+    <div><strong>شحن داخل مصر</strong><small>توصيل آمن لباب البيت</small></div>
+  </div>
+  <div class="trust-item">
+    <span class="trust-icon">♡</span>
+    <div><strong>أناقة يومية</strong><small>تصميم بسيط وسهل التنسيق</small></div>
+  </div>
+</section>
+
+<!-- ================= CATEGORIES ================= -->
+<section class="section categories-section">
+<div class="section-heading">
+<div>
+<span>
+                        FLORA COLLECTION
+                    </span>
+<h2>
+                        تسوقي حسب النوع
+                    </h2>
+</div>
+<a href="shop.html">
+                    عرض الكل ←
+                </a>
+</div>
+<div class="categories">
+<a class="category" href="shop.html?category=plain">
+<img alt="حجاب سادة" src="../assets/plain.jpg"/>
+<h3>
+                        حجاب سادة
+                    </h3>
+</a>
+<a class="category" href="shop.html?category=printed">
+<img alt="حجاب مشجر" src="../assets/printed.jpg"/>
+<h3>
+                        حجاب مشجر
+                    </h3>
+</a>
+<a class="category" href="shop.html?category=chiffon">
+<img alt="حجاب شيفون" src="../assets/chiffon.jpg"/>
+<h3>
+                        شيفون
+                    </h3>
+</a>
+<a class="category" href="shop.html?category=modal">
+<img alt="حجاب مودال" src="../assets/modal.jpg"/>
+<h3>
+                        مودال
+                    </h3>
+</a>
+</div>
+</section>
+<!-- ================= FEATURED PRODUCTS ================= -->
+<section class="section products-section">
+<div class="section-heading">
+<div>
+<span>
+                        OUR FAVORITES
+                    </span>
+<h2>
+                        منتجات مميزة
+                    </h2>
+</div>
+<a href="shop.html">
+                    عرض الكل ←
+                </a>
+</div>
+<div class="products" id="featuredProducts"><div class="products-state">جاري تحميل المنتجات…</div></div>
+
+</section>
+<!-- ================= PROMO BANNER ================= -->
+<section class="collection-banner">
+<div class="collection-content">
+<span>
+                    FLORA COLLECTION
+                </span>
+<h2>
+                    قطع بسيطة<br/>
+                    لكل إطلالة
+                </h2>
+<p>
+                    اختاري القطعة التي تناسب أسلوبك.
+                </p>
+<a class="light-button" href="shop.html">
+                    تسوقي الآن
+                </a>
+</div>
+</section>
+
+<!-- ================= MINI CTA ================= -->
+<section class="mini-cta">
+  <div>
+    <span>FLORA EVERYDAY</span>
+    <h2>اختاري لونك المفضل<br>وكمّلي إطلالتك.</h2>
+  </div>
+  <a href="shop.html" class="mini-cta-button">تسوقي المجموعة</a>
+</section>
+
+<!-- ================= BRAND SECTION ================= -->
+<section class="section brand-section">
+<div class="brand-image">
+<img alt="Flora Fashion Hijab" src="../assets/brand.jpg"/>
+</div>
+<div class="brand-content">
+<span>
+                    ABOUT FLORA
+                </span>
+<h2>
+                    أكثر من مجرد حجاب
+                </h2>
+<p>
+                    في Flora نؤمن أن التفاصيل البسيطة هي التي
+                    تصنع الإطلالة المميزة.
+                </p>
+<a class="text-button" href="about.html">
+                    تعرفي علينا ←
+                </a>
+</div>
+</section>
+</main>
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+<div class="footer-top">
+<!-- Brand -->
+<div class="footer-brand">
+<img alt="Flora Fashion Hijab" src="../assets/logo.png"/>
+<p>
+                    أناقة بسيطة، جودة تستحق الثقة.
+                </p>
+</div>
+<!-- Links -->
+<div class="footer-column">
+<h3>
+                    روابط سريعة
+                </h3>
+<a href="home.html">
+                    الرئيسية
+                </a>
+<a href="shop.html">
+                    المتجر
+                </a>
+<a href="about.html">
+                    من نحن
+                </a>
+<a href="contact.html">
+                    اتصل بنا
+                </a>
+<a href="orders.html">
+                    طلباتي
+                </a>
+</div>
+<!-- Customer Service -->
+<div class="footer-column">
+<h3>
+                    خدمة العملاء
+                </h3>
+<a href="contact.html">
+                    الشحن والتوصيل
+                </a>
+<a href="contact.html">
+                    الاستبدال والاسترجاع
+                </a>
+<a href="contact.html">
+                    الأسئلة الشائعة
+                </a>
+</div>
+<!-- Contact -->
+<div class="footer-column">
+<h3>
+                    تواصل معنا
+                </h3>
+<a href="contact.html">
+                    Facebook
+                </a>
+<a href="contact.html">
+                    Instagram
+                </a>
+<a href="contact.html">
+                    WhatsApp
+                </a>
+</div>
+</div>
+<div class="footer-bottom">
+<span>
+                © 2026 Flora Fashion Hijab
+            </span>
+<span>
+                جميع الحقوق محفوظة
+            </span>
+</div>
+</footer>
+<!-- Home JavaScript -->
+<script src="../js/ui.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/home.js"></script>
+</body>
+</html>
