@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>إتمام الطلب | Flora Fashion Hijab</title>
+<meta name="robots" content="index,follow">
+<meta name="description" content="أدخل بيانات التوصيل وأكمل طلبك من Flora Fashion Hijab مع الدفع عند الاستلام والشحن المجاني.">
+<link href="../css/common.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../Shared/frontend/js/supabase-config.js"></script>
+<script src="../../../Shared/frontend/js/production-config.js"></script>
+<link href="../css/checkout.css" rel="stylesheet"/>
+</head>
+<body>
+<header class="flora-site-header">
+  <div class="flora-header-inner">
+    <a class="flora-logo" href="home.html" aria-label="Flora Fashion Hijab - الرئيسية"><img src="../images/logo.svg" alt="Flora Fashion Hijab" width="208" height="76"></a>
+    <nav class="main-nav" aria-label="التنقل الرئيسي">
+      <a href="home.html">الرئيسية</a><a href="shop.html">المتجر</a><a href="about.html">من نحن</a><a href="contact.html">اتصل بنا</a><a href="orders.html">طلباتي</a><a href="account.html">حسابي</a>
+    </nav>
+    <div class="flora-header-actions">
+      <button class="search-button flora-icon-button" type="button" aria-label="البحث عن منتج" title="بحث"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.7"/><path d="m16 16 4.5 4.5"/></svg></button>
+      <a class="flora-icon-button flora-account-shortcut" href="account.html" aria-label="تسجيل الدخول أو إنشاء حساب" title="حسابي"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.8 20c.5-4 3.2-6.1 7.2-6.1s6.7 2.1 7.2 6.1"/></svg></a>
+      <a class="flora-icon-button cart-button" href="cart.html" aria-label="سلة المشتريات" title="سلة المشتريات"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.1 11.1a2 2 0 0 0 2 1.6h8.7a2 2 0 0 0 1.9-1.5L21 8H6"/><circle cx="9.5" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg><span class="cart-count" data-cart-count="0">0</span></a>
+    </div>
+  </div>
+</header>
+<main class="checkout-page">
+<div class="container">
+<div class="page-heading">
+<span>FLORA FASHION HIJAB</span>
+<h1>إتمام الطلب</h1>
+<p>
+                أدخل بيانات التوصيل لإتمام طلبك
+            </p>
+</div>
+<form class="checkout-layout" id="checkoutForm">
+<section class="checkout-form">
+<div class="form-section customer-auth-section">
+  <div class="section-heading"><span>00</span><div><h2>تأكيد البريد الإلكتروني</h2><p>التسوق متاح بدون حساب، لكن تأكيد البريد مطلوب لإرسال الطلب.</p></div></div>
+  <div class="form-grid">
+    <div class="form-group full"><label for="customerEmail">البريد الإلكتروني</label><input id="customerEmail" type="email" autocomplete="email" placeholder="name@example.com" required><small>هنبعتلك كود تحقق لمرة واحدة (OTP).</small></div>
+    <div class="form-group full"><button class="primary-button" type="button" id="sendCustomerOtp">إرسال كود التحقق</button></div>
+    <div class="form-group full otp-checkout-group" id="customerOtpGroup" hidden><label for="customerOtp">كود التحقق المرسل إلى بريدك</label><div class="checkout-otp-digits" id="checkoutOtpDigits" dir="ltr" aria-label="رمز التحقق"><input inputmode="numeric" autocomplete="one-time-code" maxlength="1" aria-label="الرقم الأول"><input inputmode="numeric" maxlength="1" aria-label="الرقم الثاني"><input inputmode="numeric" maxlength="1" aria-label="الرقم الثالث"><input inputmode="numeric" maxlength="1" aria-label="الرقم الرابع"><input inputmode="numeric" maxlength="1" aria-label="الرقم الخامس"><input inputmode="numeric" maxlength="1" aria-label="الرقم السادس"></div><input id="customerOtp" type="hidden"><button class="primary-button" type="button" id="verifyCustomerOtp">تأكيد البريد والمتابعة ✓</button><button class="otp-resend-btn" type="button" id="resendCustomerOtp">إعادة إرسال الرمز</button><small class="otp-hint">لو الرسالة مش ظاهرة، راجع مجلد Spam أو أعد إرسال الرمز.</small></div>
+  </div>
+  <p id="customerAuthMessage" class="form-message" role="status" aria-live="polite"></p>
+</div>
+<!-- ================= بيانات العميل ================= -->
+<div class="form-section">
+<div class="section-heading">
+<span>01</span>
+<div>
+<h2>بيانات العميل</h2>
+<p>بيانات التواصل الأساسية</p>
+</div>
+</div>
+<div class="form-grid">
+<div class="form-group">
+<label for="fullName">
+                                الاسم بالكامل
+                            </label>
+<input autocomplete="name" id="fullName" name="fullName" placeholder="اكتب الاسم بالكامل" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="phone">
+                                رقم الهاتف
+                            </label>
+<input autocomplete="tel" id="phone" inputmode="tel" maxlength="11" name="phone" placeholder="01xxxxxxxxx" required="" type="tel"/>
+</div>
+</div>
+</div>
+<!-- ================= العنوان ================= -->
+<div class="form-section">
+<div class="section-heading">
+<span>02</span>
+<div>
+<h2>عنوان التوصيل</h2>
+<p>أين تريد استلام الطلب؟</p>
+</div>
+</div>
+<div class="form-grid">
+<div class="form-group">
+<label for="governorate">
+                                المحافظة
+                            </label>
+<select id="governorate" name="governorate" required="">
+<option value="">
+                                    اختر المحافظة
+                                </option>
+<option value="القاهرة">
+                                    القاهرة
+                                </option>
+<option value="الجيزة">
+                                    الجيزة
+                                </option>
+<option value="القليوبية">
+                                    القليوبية
+                                </option>
+<option value="الإسكندرية">
+                                    الإسكندرية
+                                </option>
+<option value="الدقهلية">
+                                    الدقهلية
+                                </option>
+<option value="الشرقية">
+                                    الشرقية
+                                </option>
+<option value="الغربية">
+                                    الغربية
+                                </option>
+<option value="المنوفية">
+                                    المنوفية
+                                </option>
+<option value="البحيرة">
+                                    البحيرة
+                                </option>
+<option value="كفر الشيخ">
+                                    كفر الشيخ
+                                </option>
+<option value="دمياط">
+                                    دمياط
+                                </option>
+<option value="بورسعيد">
+                                    بورسعيد
+                                </option>
+<option value="الإسماعيلية">
+                                    الإسماعيلية
+                                </option>
+<option value="السويس">
+                                    السويس
+                                </option>
+<option value="الفيوم">
+                                    الفيوم
+                                </option>
+<option value="بني سويف">
+                                    بني سويف
+                                </option>
+<option value="المنيا">
+                                    المنيا
+                                </option>
+<option value="أسيوط">
+                                    أسيوط
+                                </option>
+<option value="سوهاج">
+                                    سوهاج
+                                </option>
+<option value="قنا">
+                                    قنا
+                                </option>
+<option value="الأقصر">
+                                    الأقصر
+                                </option>
+<option value="أسوان">
+                                    أسوان
+                                </option>
+</select>
+</div>
+<div class="form-group">
+<label for="city">
+                                المدينة / المنطقة
+                            </label>
+<input id="city" name="city" placeholder="مثال: مدينة نصر" required="" type="text"/>
+</div>
+<div class="form-group full">
+<label for="address">
+                                العنوان بالتفصيل
+                            </label>
+<textarea id="address" name="address" placeholder="اسم الشارع، رقم العمارة، الدور، الشقة..." required="" rows="4"></textarea>
+</div>
+<div class="form-group">
+<label for="landmark">
+                                علامة مميزة
+                                <small>(اختياري)</small>
+</label>
+<input id="landmark" name="landmark" placeholder="بجوار..." type="text"/>
+</div>
+</div>
+</div>
+<!-- ================= الدفع ================= -->
+<div class="form-section">
+<div class="section-heading">
+<span>03</span>
+<div>
+<h2>طريقة الدفع</h2>
+<p>الدفع عند الاستلام متاح حاليًا، والشحن مجاني.</p>
+</div>
+</div>
+<div class="payment-options">
+<label class="payment-option">
+<input checked="" name="payment" type="radio" value="cash"/>
+<span class="payment-card">
+<span class="payment-icon">
+                                    💵
+                                </span>
+<span>
+<strong>
+                                        الدفع عند الاستلام
+                                    </strong>
+<small>
+                                        ادفع عند وصول طلبك
+                                    </small>
+</span>
+</span>
+</label>
+<label class="payment-option payment-option-disabled">
+<input disabled name="payment" type="radio" value="online"/>
+<span class="payment-card">
+<span class="payment-icon">
+                                    💳
+                                </span>
+<span>
+<strong>
+                                        الدفع الإلكتروني
+                                    </strong>
+<small>
+                                        غير متاح حاليًا
+                                    </small>
+</span>
+</span>
+</label>
+</div>
+</div>
+<div class="form-message" id="formMessage"></div>
+<button class="confirm-btn" id="confirmOrder" type="submit">
+                    تأكيد الطلب
+                </button>
+</section>
+<!-- ================= ملخص الطلب ================= -->
+<aside class="order-summary">
+<h2>ملخص طلبك</h2>
+<div class="checkout-items" id="checkoutItems"></div>
+<div class="summary-line">
+<span>
+                        الإجمالي الفرعي
+                    </span>
+<strong>
+<span id="checkoutSubtotal">0</span>
+                        ج.م
+                    </strong>
+</div>
+<div class="summary-line">
+<span>
+                        الشحن
+                    </span>
+<strong id="checkoutShipping">
+                        مجاني
+                    </strong>
+</div>
+<div class="summary-divider"></div>
+<div class="summary-total">
+<span>
+                        الإجمالي
+                    </span>
+<strong>
+<span id="checkoutTotal">0</span>
+                        ج.م
+                    </strong>
+</div>
+<a class="edit-cart" href="cart.html">
+                    تعديل السلة
+                </a>
+</aside>
+</form>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container footer-content">
+<div>
+<h3>
+                Flora Fashion Hijab
+            </h3>
+<p>
+                أناقة بسيطة تبدأ من اختيارك.
+            </p>
+</div>
+<div class="footer-links">
+<a href="home.html">
+                الرئيسية
+            </a>
+<a href="shop.html">
+                المتجر
+            </a>
+<a href="cart.html">
+                السلة
+            </a>
+</div>
+</div>
+<div class="footer-bottom">
+        © 2026 Flora Fashion Hijab
+    </div>
+</footer>
+<script src="../js/ui.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/checkout.js"></script>
+</body>
+</html>

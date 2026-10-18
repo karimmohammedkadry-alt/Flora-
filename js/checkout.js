@@ -1,6 +1,11 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const $ = id => document.getElementById(id);
   const format = n => Number(n || 0).toLocaleString("ar-EG");
+  const safeImageUrl = value => {
+    const fallback = new URL("../assets/product-1.jpg", window.location.href).href;
+    try { const url = new URL(String(value || "../assets/product-1.jpg"), window.location.href); return ["https:", "http:"].includes(url.protocol) ? url.href : fallback; }
+    catch (_) { return fallback; }
+  };
   const message = (text, type = "error") => { const el = $("formMessage"); if (el) { el.textContent = text; el.className = `form-message show ${type}`; } };
   const authMessage = (text, type = "") => { const el = $("customerAuthMessage"); if (el) { el.textContent = text; el.className = `form-message show ${type}`; } };
   let cart = [], emailOtpSent = false, verifiedEmail = "", orderSubmissionLocked = false;
@@ -9,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const box = $("checkoutItems");
     if (!cart.length) { message("السلة فارغة. ارجع للمتجر وأضف المنتجات أولاً.", "error"); return; }
     box.innerHTML = "";
-    cart.forEach(item => { const el = document.createElement("div"); el.className = "checkout-item"; el.innerHTML = `<div class="checkout-item-image"><img src="${item.image_path || "../assets/product-1.jpg"}" alt=""></div><div><div class="checkout-item-name"></div><div class="checkout-item-meta"></div></div><div class="checkout-item-price">${format(item.price * item.quantity)} ج.م</div>`; el.querySelector(".checkout-item-name").textContent = item.name; el.querySelector(".checkout-item-meta").textContent = `${item.color_name || "اللون الأساسي"} × ${item.quantity}`; box.appendChild(el); });
+    cart.forEach(item => { const el = document.createElement("div"); el.className = "checkout-item"; el.innerHTML = `<div class="checkout-item-image"><img alt=""></div><div><div class="checkout-item-name"></div><div class="checkout-item-meta"></div></div><div class="checkout-item-price">${format(item.price * item.quantity)} ج.م</div>`; el.querySelector(".checkout-item-image img").src = safeImageUrl(item.image_path); el.querySelector(".checkout-item-name").textContent = item.name || "منتج"; el.querySelector(".checkout-item-meta").textContent = `${item.color_name || "اللون الأساسي"} × ${item.quantity}`; box.appendChild(el); });
     const subtotal = cart.reduce((s, x) => s + Number(x.price) * Number(x.quantity), 0);
     $("checkoutSubtotal").textContent = format(subtotal);
     $("checkoutShipping").textContent = window.FLORA_PRODUCTION?.shipping?.note || "مجاني";

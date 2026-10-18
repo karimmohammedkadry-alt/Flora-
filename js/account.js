@@ -1,21 +1,71 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const $ = id => document.getElementById(id);
-  const inputs = [...document.querySelectorAll('#accountOtpDigits input')];
-  let sb, mode = 'login', requestedEmail = '', pendingProfile = {}, sending = false, resendTimer = null, resendUntil = 0;
-  const say = (text, type='') => { const el=$('accountMessage'); el.textContent=text; el.className=`account-message ${type}`; };
-  const digits = () => inputs.map(i=>i.value.replace(/\D/g,'').slice(-1)).join('');
-  function setMode(next){mode=next;$('loginMode').classList.toggle('active',mode==='login');$('registerMode').classList.toggle('active',mode==='register');$('accountTitle').textContent=mode==='login'?'أهلًا بيك من جديد':'خلّينا نبدأ حسابك';$('accountIntro').textContent=mode==='login'?'سجّل دخولك ببريدك الإلكتروني، من غير كلمة مرور.':'اكتب بياناتك الأساسية، وبعدها أكد بريدك الإلكتروني.';for(const id of ['accountFullName','accountPhone','accountNameLabel','accountPhoneLabel'])$(id).hidden=mode!=='register';$('accountFullName').required=mode==='register';$('accountPhone').required=mode==='register';$('sendAccountOtp').querySelector('span').textContent=mode==='login'?'إرسال رمز تسجيل الدخول':'إرسال رمز إنشاء الحساب';say('');}
-  function showOtp(email){requestedEmail=email;$('otpEmailLabel').textContent=email;$('accountOtpPanel').hidden=false;$('accountForm').hidden=true;$('accountEmail').readOnly=true;inputs.forEach(i=>{i.value='';i.classList.remove('filled')});inputs[0].focus();say('وصلنا لخطوة التحقق. افتح بريدك واكتب الرمز المكوّن من 6 أرقام.','success');}
-  function startResendCooldown(seconds=30){resendUntil=Date.now()+seconds*1000;const btn=$('resendAccountOtp');btn.disabled=true;const tick=()=>{const left=Math.max(0,Math.ceil((resendUntil-Date.now())/1000));btn.textContent=left?`إعادة إرسال الرمز بعد ${left} ثانية`:'إعادة إرسال الرمز';btn.disabled=left>0;if(!left&&resendTimer){clearInterval(resendTimer);resendTimer=null;}};tick();if(resendTimer)clearInterval(resendTimer);resendTimer=setInterval(tick,250);}
-  function showEmail(){ if(resendTimer){clearInterval(resendTimer);resendTimer=null;} $('resendAccountOtp').disabled=false; $('resendAccountOtp').textContent='إعادة إرسال الرمز'; $('otpEmailLabel').textContent=''; $('accountOtpPanel').hidden=true; $('accountForm').hidden=false; $('accountEmail').readOnly=false; inputs.forEach(i=>{i.value='';i.classList.remove('filled')});say('');$('accountEmail').focus(); }
-  function loggedIn(user){$('accountFormView').hidden=true;$('accountLoggedIn').hidden=false;$('signedEmail').textContent=user.email||'تم تسجيل الدخول';}
-  inputs.forEach((input,index)=>{
-    input.addEventListener('input',()=>{input.value=input.value.replace(/\D/g,'').slice(-1);input.classList.toggle('filled',!!input.value);if(input.value&&index<inputs.length-1)inputs[index+1].focus();if(digits().length===6)say('الرمز جاهز، اضغط تأكيد الرمز.');});
-    input.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!input.value&&index>0)inputs[index-1].focus();if(e.key==='ArrowLeft'&&index>0)inputs[index-1].focus();if(e.key==='ArrowRight'&&index<inputs.length-1)inputs[index+1].focus();if(e.key==='Enter'){e.preventDefault();verify();}});
-    input.addEventListener('paste',e=>{const value=(e.clipboardData||window.clipboardData).getData('text').replace(/\D/g,'').slice(0,6);if(value){e.preventDefault();inputs.forEach((el,i)=>{el.value=value[i]||'';el.classList.toggle('filled',!!el.value)});inputs[Math.min(value.length,5)].focus();}});
-  });
-  async function sendCode(){if(sending)return;if($('accountOtpPanel')&&!$('accountOtpPanel').hidden&&Date.now()<resendUntil){say('استنى انتهاء العداد قبل طلب رمز جديد.','error');return;}const email=$('accountEmail').value.trim().toLowerCase();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){say('اكتب بريد إلكتروني صحيح الأول.','error');return;}if(mode==='register'){pendingProfile={full_name:$('accountFullName').value.trim(),phone:$('accountPhone').value.trim()};if(!pendingProfile.full_name){say('اكتب اسمك بالكامل.','error');$('accountFullName').focus();return;}if(!pendingProfile.phone){say('اكتب رقم الموبايل.','error');$('accountPhone').focus();return;}}try{const cart=await window.FloraStore?.getCart?.();if(Array.isArray(cart)&&cart.length)sessionStorage.setItem('flora_account_pending_cart',JSON.stringify(cart.map(x=>({product_id:x.id,quantity:x.quantity}))))}catch(e){console.warn('Cart preservation skipped:',e)}sending=true;const btn=$('sendAccountOtp');btn.disabled=true;btn.querySelector('span').textContent='جارٍ إرسال الرمز…';try{const redirectTo = new URL('account.html', window.location.href).href;const {error}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:mode==='register',emailRedirectTo:redirectTo,data:mode==='register'?{full_name:pendingProfile.full_name,phone:pendingProfile.phone}:undefined}});if(error)throw error;showOtp(email);startResendCooldown(30);}catch(e){console.error(e);say(mode==='login'?'تعذر إرسال الرمز. لو دي أول مرة، اختار إنشاء حساب.':'تعذر إرسال الرمز. راجع إعداد البريد في Supabase وحاول تاني.','error');}finally{sending=false;btn.disabled=false;btn.querySelector('span').textContent=mode==='login'?'إرسال رمز تسجيل الدخول':'إرسال رمز إنشاء الحساب';}}
-  async function verify(){const token=digits();if(token.length!==6){say('اكتب الأرقام الستة اللي وصلتك في الإيميل.','error');inputs.find(i=>!i.value)?.focus();return;}const btn=$('verifyAccountOtp');btn.disabled=true;btn.textContent='جارٍ التحقق…';try{const {data,error}=await sb.auth.verifyOtp({email:requestedEmail,token,type:'email'});if(error||!data.user||!data.session)throw error||new Error('OTP verification failed');if(mode==='register'&&(pendingProfile.full_name||pendingProfile.phone)){const {error:profileError}=await sb.auth.updateUser({data:{full_name:pendingProfile.full_name,phone:pendingProfile.phone}});if(profileError)console.warn('Profile metadata save warning:',profileError.message);}const pending=JSON.parse(sessionStorage.getItem('flora_account_pending_cart')||'[]');if(pending.length){const rows=pending.map(x=>({user_id:data.user.id,product_id:Number(x.product_id),quantity:Number(x.quantity)}));const {error:cartError}=await sb.from('cart_items').upsert(rows,{onConflict:'user_id,product_id'});if(cartError)console.warn('Customer cart transfer warning:',cartError.message);sessionStorage.removeItem('flora_account_pending_cart');}say('تم التحقق من بريدك بنجاح.','success');const next=new URLSearchParams(location.search).get('next');if(next&&/^(checkout|orders|home|shop)\.html$/.test(next)){location.href=next;return;}loggedIn(data.user);}catch(e){console.error(e);say('الرمز غير صحيح أو انتهت صلاحيته. راجع الأرقام أو اطلب رمزًا جديدًا.','error');inputs.forEach(i=>{i.value='';i.classList.remove('filled')});inputs[0].focus();}finally{btn.disabled=false;btn.innerHTML='تأكيد الرمز والمتابعة <b>✓</b>';}}
-  $('accountForm').addEventListener('submit',e=>{e.preventDefault();sendCode()});$('loginMode').addEventListener('click',()=>setMode('login'));$('registerMode').addEventListener('click',()=>setMode('register'));setMode('login');$('verifyAccountOtp').addEventListener('click',verify);$('resendAccountOtp').addEventListener('click',sendCode);$('changeAccountEmail').addEventListener('click',showEmail);$('accountSignOut').addEventListener('click',async()=>{await sb.auth.signOut();$('accountLoggedIn').hidden=true;$('accountFormView').hidden=false;showEmail();});
-  try{sb=await FloraSupabase.init();const {data:{session}}=await sb.auth.getSession();if(session?.user&&!session.user.is_anonymous)loggedIn(session.user);}catch(e){console.error(e);say('تعذر الاتصال بخدمة الحساب. حدّث الصفحة وحاول مرة أخرى.','error');}
+  let sb, mode = "login", busy = false;
+  const say = (text, type = "") => { const el = $("accountMessage"); el.textContent = text; el.className = `account-message ${type}`; };
+  const authEndpoint = `${window.FLORA_SUPABASE_URL.replace(/\/$/, "")}/functions/v1/flora-customer-auth`;
+  function setMode(next) {
+    mode = next;
+    $("loginMode").classList.toggle("active", mode === "login");
+    $("registerMode").classList.toggle("active", mode === "register");
+    $("accountTitle").textContent = mode === "login" ? "أهلًا بيك من جديد" : "خلّينا نبدأ حسابك";
+    $("accountIntro").textContent = mode === "login" ? "سجّل دخولك برقم موبايلك وكلمة المرور." : "اكتب اسمك ورقم موبايلك واختار كلمة مرور.";
+    $("accountFullName").hidden = mode !== "register";
+    $("accountNameLabel").hidden = mode !== "register";
+    $("accountFullName").required = mode === "register";
+    $("accountPasswordConfirm").hidden = mode !== "register";
+    $("accountPasswordConfirmLabel").hidden = mode !== "register";
+    $("accountPasswordConfirm").required = mode === "register";
+    $("accountPassword").autocomplete = mode === "login" ? "current-password" : "new-password";
+    $("accountSubmit").querySelector("span").textContent = mode === "login" ? "تسجيل الدخول" : "إنشاء حساب";
+    say("");
+  }
+  function loggedIn(user) {
+    $("accountFormView").hidden = true; $("accountLoggedIn").hidden = false;
+    $("signedEmail").textContent = user.user_metadata?.full_name || user.phone || "تم تسجيل الدخول";
+  }
+  function normalizePhone(value) { return value.replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/[^0-9]/g, ""); }
+  async function submit(e) {
+    e.preventDefault(); if (busy) return;
+    const phone = normalizePhone($("accountPhone").value);
+    const password = $("accountPassword").value;
+    const fullName = $("accountFullName").value.trim();
+    if (!/^01[0125][0-9]{8}$/.test(phone)) { say("اكتب رقم موبايل مصري صحيح مكوّن من 11 رقم.", "error"); $("accountPhone").focus(); return; }
+    if (password.length < 8) { say("كلمة المرور لازم تكون 8 أحرف على الأقل.", "error"); return; }
+    if (mode === "register" && !fullName) { say("اكتب اسمك بالكامل.", "error"); return; }
+    if (mode === "register" && password !== $("accountPasswordConfirm").value) { say("كلمتا المرور مش متطابقتين.", "error"); return; }
+    busy = true; const btn = $("accountSubmit"); btn.disabled = true; btn.querySelector("span").textContent = "لحظة من فضلك…";
+    try {
+      sb = sb || await window.FloraSupabase.init();
+      let cart = [];
+      try { const rows = await window.FloraStore?.getCart?.(); if (Array.isArray(rows)) cart = rows.map(x => ({ product_id: x.id, quantity: x.quantity })); } catch (_) {}
+      if (cart.length) sessionStorage.setItem("flora_account_pending_cart", JSON.stringify(cart));
+      const res = await fetch(authEndpoint, { method: "POST", headers: { "Content-Type": "application/json", "apikey": window.FLORA_SUPABASE_KEY }, body: JSON.stringify({ action: mode, phone, password, fullName }) });
+      const result = await res.json().catch(() => ({}));
+      if (!res.ok || result.error) throw new Error(result.error || "تعذر إكمال العملية. حاول مرة أخرى.");
+      if (!result.session?.access_token || !result.session?.refresh_token) throw new Error("لم يتم إنشاء جلسة آمنة. حاول مرة أخرى.");
+      const { data, error } = await sb.auth.setSession({ access_token: result.session.access_token, refresh_token: result.session.refresh_token });
+      if (error) throw error;
+      const pending = JSON.parse(sessionStorage.getItem("flora_account_pending_cart") || "[]");
+      if (pending.length) {
+        const rows = pending.map(x => ({ user_id: data.user.id, product_id: Number(x.product_id), quantity: Number(x.quantity) }));
+        const { error: cartError } = await sb.from("cart_items").upsert(rows, { onConflict: "user_id,product_id" });
+        if (cartError) console.warn("Cart transfer warning:", cartError.message);
+        sessionStorage.removeItem("flora_account_pending_cart");
+      }
+      say(mode === "register" ? "تم إنشاء حسابك بنجاح." : "تم تسجيل الدخول بنجاح.", "success");
+      const next = new URLSearchParams(location.search).get("next");
+      if (next && /^(checkout|orders|home|shop)\.html$/.test(next)) { location.href = next; return; }
+      loggedIn(data.user || result.user);
+    } catch (err) {
+      console.error("Customer auth error:", err);
+      say(err.message || "حصلت مشكلة. حاول مرة أخرى.", "error");
+    } finally { busy = false; btn.disabled = false; btn.querySelector("span").textContent = mode === "login" ? "تسجيل الدخول" : "إنشاء حساب"; }
+  }
+  $("accountForm").addEventListener("submit", submit);
+  $("loginMode").addEventListener("click", () => setMode("login"));
+  $("registerMode").addEventListener("click", () => setMode("register"));
+  $("accountSignOut").addEventListener("click", async () => { if (sb) await sb.auth.signOut(); $("accountLoggedIn").hidden = true; $("accountFormView").hidden = false; $("accountForm").reset(); setMode("login"); });
+  setMode("login");
+  try { sb = await window.FloraSupabase.init(); const { data: { session } } = await sb.auth.getSession(); if (session?.user && !session.user.is_anonymous) loggedIn(session.user); }
+  catch (e) { console.error(e); say("تعذر الاتصال بخدمة الحساب. حدّث الصفحة وحاول مرة أخرى.", "error"); }
 });

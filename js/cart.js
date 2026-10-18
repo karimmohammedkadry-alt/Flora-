@@ -2,6 +2,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   const itemsEl = document.getElementById("cartItems");
   const emptyEl = document.getElementById("emptyCart");
   const format = n => Number(n || 0).toLocaleString("ar-EG");
+  const escapeHtml = value => String(value ?? "").replace(/[&<>\"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const safeImageUrl = value => {
+    const fallback = new URL("../assets/product-1.jpg", window.location.href).href;
+    try { const url = new URL(String(value || "../assets/product-1.jpg"), window.location.href); return ["https:", "http:"].includes(url.protocol) ? url.href : fallback; }
+    catch (_) { return fallback; }
+  };
   let cart = [];
 
   const summary = () => {
@@ -31,9 +37,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       const el = document.createElement("article");
       el.className = "cart-item";
       el.innerHTML = `
-        <div class="cart-item-image"><img src="${item.image_path || "../assets/product-1.jpg"}" alt=""></div>
+        <div class="cart-item-image"><img alt=""></div>
         <div class="cart-item-info">
-          <span class="cart-item-category">${item.category || "حجاب"}</span>
+          <span class="cart-item-category">${escapeHtml(item.category || "حجاب")}</span>
           <h3 class="cart-item-name"></h3>
           <span class="cart-item-color"></span>
           <span class="cart-item-price">${format(price)} ج.م</span>
@@ -49,6 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           <button type="button" class="remove-item">حذف</button>
         </div>`;
 
+      el.querySelector(".cart-item-image img").src = safeImageUrl(item.image_path);
       el.querySelector(".cart-item-name").textContent = item.name || "منتج";
       el.querySelector(".cart-item-color").textContent = `اللون: ${item.color_name || "الأساسي"}`;
 

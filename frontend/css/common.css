@@ -1,0 +1,289 @@
+.cart-count {
+    position: absolute;
+    top: -7px;
+    left: -7px;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: #1f7a4d;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    border: 2px solid #fff;
+}
+
+.cart-button,
+.cart-link,
+.cart-icon,
+.cart-btn {
+    position: relative;
+}
+
+.cart-count.bump {
+    animation: cartBump .28s ease;
+}
+
+@keyframes cartBump {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.25); }
+    100% { transform: scale(1); }
+}
+
+@media (max-width: 700px) {
+    .cart-count {
+        min-width: 18px;
+        height: 18px;
+        font-size: 10px;
+        top: -6px;
+        left: -6px;
+    }
+}
+
+/* Shared header helpers for pages that use the standard site-header. */
+.site-header {
+    background: #fff;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.site-header .container {
+    width: min(1100px, 92%);
+    margin: 0 auto;
+}
+
+.site-header .header-content {
+    min-height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.site-header .logo img {
+    height: 48px;
+    width: auto;
+    display: block;
+}
+
+.site-header .main-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.site-header .main-nav a {
+    color: #555;
+    font-weight: 700;
+}
+
+.site-header .main-nav a.active,
+.site-header .main-nav a:hover {
+    color: #1f7a4d;
+}
+
+.site-header .cart-link {
+    position: relative;
+    font-size: 20px;
+}
+
+@media (max-width: 760px) {
+    .site-header .header-content {
+        flex-wrap: wrap;
+        padding: 10px 0;
+    }
+
+    .site-header .main-nav {
+        order: 3;
+        width: 100%;
+        gap: 12px;
+    }
+}
+
+/* ===== Global UI / Responsive hardening ===== */
+html { overflow-x: hidden; -webkit-text-size-adjust: 100%; }
+body { overflow-x: hidden; }
+img, video { max-width: 100%; }
+button, input, select, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid rgba(31,122,77,.28); outline-offset: 3px; }
+
+/* Both header variants used across the site */
+.header, .site-header { width: 100%; }
+.header { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:12px 4%; background:#fff; border-bottom:1px solid #e7e7e7; }
+.header .logo { flex:0 0 auto; }
+.header .logo img { height:48px; width:auto; display:block; }
+.header .navigation { display:flex; align-items:center; justify-content:center; gap:20px; flex:1 1 auto; min-width:0; }
+.header .navigation a { white-space:nowrap; }
+.header .header-actions { flex:0 0 auto; display:flex; align-items:center; gap:12px; }
+.site-header .header-content { min-width:0; }
+.site-header .main-nav { min-width:0; }
+.site-header .main-nav a { white-space:nowrap; }
+
+@media (max-width: 900px) {
+  .header { gap:14px; }
+  .header .navigation { gap:14px; }
+  .site-header .header-content { gap:14px; }
+  .site-header .main-nav { gap:14px; }
+}
+
+@media (max-width: 760px) {
+  .header { padding:10px 4%; }
+  .header .logo img, .site-header .logo img { height:42px; }
+  .header .navigation, .site-header .main-nav {
+    order:3;
+    width:100%;
+    flex:0 0 100%;
+    justify-content:flex-start;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    overflow-y:hidden;
+    scrollbar-width:none;
+    padding:2px 2px 5px;
+  }
+  .header .navigation::-webkit-scrollbar, .site-header .main-nav::-webkit-scrollbar { display:none; }
+  .header .navigation a, .site-header .main-nav a { flex:0 0 auto; font-size:13px; }
+  .header .header-actions { margin-inline-start:auto; }
+  .site-header .header-content { padding:8px 0; }
+}
+
+@media (max-width: 430px) {
+  .header .logo img, .site-header .logo img { height:38px; }
+  .header .header-actions { gap:8px; }
+  .header .navigation, .site-header .main-nav { gap:11px; }
+  .header .navigation a, .site-header .main-nav a { font-size:12px; }
+}
+
+/* Prevent long Arabic text / IDs from creating horizontal scroll */
+.page, main, section, article, aside, footer, .card, .container { min-width:0; }
+h1, h2, h3, p, a, span, strong { overflow-wrap:anywhere; }
+
+.products-state{grid-column:1/-1;min-height:180px;display:grid;place-items:center;padding:30px;text-align:center;color:#667067;border:1px dashed var(--border,#dfe5df);border-radius:18px;background:#fbfcfb;font-size:15px}
+.product-info .add-to-cart:disabled{opacity:.55;cursor:not-allowed}
+
+/* Flora Stage 6 - production feedback */
+.flora-toast-root{position:fixed;inset:auto 16px 16px auto;z-index:99999;display:grid;gap:10px;max-width:min(380px,calc(100vw - 32px));direction:rtl}
+.flora-toast{padding:13px 16px;border-radius:14px;background:#111;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.16);opacity:0;transform:translateY(12px);transition:opacity .25s ease,transform .25s ease;font-size:14px;line-height:1.5}
+.flora-toast.show{opacity:1;transform:translateY(0)}
+.flora-toast-success{background:#176b43}
+.flora-toast-error{background:#8f2525}
+.cart-stock-warning{display:block;margin-top:6px;color:#8f2525;font-size:12px;font-weight:600}
+button:disabled{cursor:not-allowed;opacity:.6}
+
+
+/* Stage 11 — mobile production hardening */
+html { scroll-behavior: smooth; }
+input, select, textarea { max-width: 100%; }
+@media (max-width: 600px) {
+  .container { width: min(100% - 24px, 1180px); }
+  .flora-toast-root { inset: auto 12px 12px 12px; max-width: none; }
+  .flora-toast { width: 100%; }
+}
+@media (max-width: 420px) {
+  body { font-size: 14px; }
+  .header .navigation a, .site-header .main-nav a { font-size: 12px; }
+}
+.payment-option-disabled { opacity: .55; cursor: not-allowed; }
+.payment-option-disabled .payment-card { cursor: not-allowed; }
+
+/* Consistent navigation states across all storefront pages */
+.site-header .main-nav a {
+  position: relative; display: inline-flex; align-items: center; min-height: 42px;
+  padding: 8px 2px; text-decoration: none; transition: color .2s ease, transform .2s ease;
+}
+.site-header .main-nav a::after {
+  content: ""; position: absolute; inset-inline: 0; bottom: 2px; height: 2px;
+  background: #1f7a4d; border-radius: 99px; transform: scaleX(0);
+  transform-origin: center; transition: transform .22s ease;
+}
+.site-header .main-nav a:hover { color: #1f7a4d; transform: translateY(-1px); }
+.site-header .main-nav a:hover::after, .site-header .main-nav a.active::after { transform: scaleX(1); }
+.site-header .main-nav a.active { color: #1f7a4d; }
+.site-header .main-nav a:focus-visible { outline: 2px solid #1f7a4d; outline-offset: 4px; border-radius: 4px; }
+@media (prefers-reduced-motion: reduce) { .site-header .main-nav a, .site-header .main-nav a::after { transition: none; } }
+
+
+/* Flora unified navbar: shared by Home, Shop, Product and Cart */
+.header {
+  min-height: 76px; height: auto; width:100%; display:flex; align-items:center; justify-content:space-between;
+  gap:20px; padding:12px clamp(16px,4vw,56px); background:rgba(255,255,255,.98);
+  border-bottom:1px solid #e7e9e5; position:sticky; top:0; z-index:100;
+}
+.header .logo { flex:0 0 auto; width:145px; display:flex; align-items:center; }
+.header .logo img { width:100%; height:48px; object-fit:contain; }
+.header .navigation { display:flex; align-items:center; justify-content:center; gap:clamp(12px,2vw,26px); flex:1 1 auto; min-width:0; }
+.header .navigation a { position:relative; display:inline-flex; align-items:center; min-height:44px; white-space:nowrap; color:#50534f; font-size:14px; font-weight:600; transition:color .2s ease; }
+.header .navigation a:hover, .header .navigation a.active { color:#405b47; }
+.header .navigation a.active::after { content:""; position:absolute; bottom:2px; right:0; left:0; height:2px; border-radius:2px; background:#405b47; }
+.header .header-actions { display:flex; align-items:center; justify-content:flex-end; gap:12px; flex:0 0 auto; }
+.header .search-button { width:40px; height:40px; border-radius:50%; background:#f5f6f3; color:#304638; }
+.header .cart-button { position:relative; display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:50%; background:#f5f6f3; color:#304638; font-size:20px; }
+.header .cart-button.active { background:#405b47; color:#fff; }
+.header .cart-button .cart-count { border-color:#fff; }
+@media(max-width:760px) {
+ .header { position:sticky; top:0; flex-wrap:wrap; gap:8px 12px; padding:9px 4%; }
+ .header .logo { width:120px; } .header .logo img { height:42px; }
+ .header .header-actions { margin-inline-start:auto; gap:8px; }
+ .header .navigation { order:3; width:100%; flex:0 0 100%; justify-content:flex-start; gap:18px; overflow-x:auto; overflow-y:hidden; scrollbar-width:none; padding:0 1px 3px; }
+ .header .navigation::-webkit-scrollbar { display:none; }
+ .header .navigation a { min-height:34px; font-size:13px; }
+ .header .navigation a.active::after { bottom:0; }
+}
+@media(max-width:380px) { .header .logo { width:105px; } .header .navigation { gap:14px; } .header .navigation a { font-size:12px; } }
+
+
+/* Flora Store — modern storefront polish, shared across every page */
+:root{--flora-forest:#365b43;--flora-forest-deep:#263f30;--flora-sage:#edf3ec;--flora-cream:#f8f7f2;--flora-ink:#20231f;--flora-muted:#70776f;--flora-line:#e7e9e3;--flora-radius:18px}
+body{color:var(--flora-ink);font-family:"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.7;text-rendering:optimizeLegibility}
+.header{min-height:76px;height:auto;padding:10px clamp(14px,4vw,56px);gap:clamp(12px,2vw,26px);background:rgba(255,255,255,.94);border-bottom:1px solid var(--flora-line);box-shadow:0 5px 22px rgba(31,42,30,.035);backdrop-filter:blur(14px)}
+.header .logo{width:clamp(108px,12vw,148px)}.header .logo img{max-height:48px;object-fit:contain}
+.header .navigation{gap:clamp(12px,2vw,26px);scrollbar-width:none}.header .navigation a{min-height:44px;height:auto;font-weight:650;font-size:14px;color:#555e54;transition:color .18s ease}.header .navigation a:hover,.header .navigation a.active{color:var(--flora-forest)}.header .navigation a.active::after{bottom:1px;height:3px;border-radius:4px;background:var(--flora-forest)}
+.header .header-actions{gap:8px}.header .search-button,.header .cart-button{width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #e8ece6;border-radius:50%;background:#f7f9f6;color:var(--flora-forest-deep);transition:transform .18s,background .18s}.header .search-button:hover,.header .cart-button:hover{background:#eaf2e9;transform:translateY(-1px)}
+.cart-count{background:var(--flora-forest);border-color:#fff;box-shadow:0 2px 6px #1e39232b}
+button,.primary-button,.light-button,.mini-cta-button,.text-button{transition:transform .18s ease,box-shadow .18s ease,background .18s ease}.primary-button:hover,.mini-cta-button:hover,button:hover{transform:translateY(-1px)}
+.product-card,.category,.product-info,.cart-item,.order-card,.account-card,.contact-card{transition:box-shadow .2s ease,border-color .2s ease,transform .2s ease}.product-card{border-color:var(--flora-line);border-radius:var(--flora-radius);overflow:hidden;background:#fff}.product-card:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(31,48,33,.09)}.product-card img{transition:transform .35s ease}.product-card:hover img{transform:scale(1.025)}
+input,select,textarea{max-width:100%;border-color:#dfe5dc;border-radius:12px;min-height:44px}input:focus,select:focus,textarea:focus{outline:3px solid rgba(54,91,67,.13);border-color:#6c9073}button:focus-visible,a:focus-visible{outline:3px solid rgba(54,91,67,.34);outline-offset:3px}
+img{height:auto}main{min-height:45vh}.section{scroll-margin-top:100px}.products-state{border-color:#e2e9df;background:linear-gradient(135deg,#fbfcfa,#f5f8f3);border-radius:18px;color:#6b7569;line-height:1.9}
+.footer{border-top:1px solid var(--flora-line)}
+@media(max-width:760px){.header{gap:6px 12px;padding:9px 4%;}.header .logo{width:118px}.header .logo img{max-height:42px}.header .header-actions{margin-inline-start:auto}.header .navigation{order:3;width:100%;flex:0 0 100%;justify-content:flex-start;gap:17px;padding:2px 1px 6px;overscroll-behavior-inline:contain}.header .navigation a{font-size:13px;min-height:35px}.header .header-actions .search-button,.header .header-actions .cart-button{width:38px;height:38px}}
+@media(max-width:420px){.header .logo{width:105px}.header .navigation{gap:14px}.header .navigation a{font-size:12px}.section-heading{gap:12px}.section-heading h2{font-size:clamp(21px,6vw,28px)}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+
+/* Consistent active and keyboard states for both supported storefront header layouts. */
+.header .navigation a { position:relative; display:inline-flex; align-items:center; min-height:42px; padding:8px 2px; text-decoration:none; color:#555; font-weight:700; transition:color .2s ease, transform .2s ease; }
+.header .navigation a::after { content:""; position:absolute; inset-inline:0; bottom:2px; height:2px; background:#1f7a4d; border-radius:99px; transform:scaleX(0); transform-origin:center; transition:transform .22s ease; }
+.header .navigation a:hover, .header .navigation a.active { color:#1f7a4d; }
+.header .navigation a:hover { transform:translateY(-1px); }
+.header .navigation a:hover::after, .header .navigation a.active::after { transform:scaleX(1); }
+.header .navigation a:focus-visible { outline:2px solid #1f7a4d; outline-offset:4px; border-radius:4px; }
+@media (prefers-reduced-motion:reduce) { .header .navigation a, .header .navigation a::after { transition:none; } }
+
+
+/* Flora unified customer header v12 — one shared layout on every storefront page */
+:root{--flora-brand:#9b4e67;--flora-brand-dark:#6c3548;--flora-brand-soft:#f8edf0;--flora-line:#eee2e6;--flora-ink:#30262a}
+.flora-site-header{position:sticky;top:0;z-index:1000;width:100%;background:rgba(255,255,255,.96)!important;border-bottom:1px solid var(--flora-line)!important;box-shadow:0 5px 22px rgba(76,39,52,.055);backdrop-filter:blur(14px)}
+.flora-header-inner{width:min(1240px,94%);min-height:82px;margin-inline:auto;display:grid;grid-template-columns:190px minmax(0,1fr) 142px;align-items:center;gap:22px}
+.flora-site-header .flora-logo{display:flex;align-items:center;min-width:0;text-decoration:none}
+.flora-site-header .flora-logo img{display:block;width:100%;max-width:190px;height:62px;object-fit:contain;object-position:right center;background:transparent}
+.flora-site-header .main-nav{display:flex;align-items:center;justify-content:center;gap:clamp(12px,1.7vw,26px);min-width:0;flex-wrap:nowrap}
+.flora-site-header .main-nav a{position:relative;display:inline-flex;align-items:center;min-height:42px;white-space:nowrap;text-decoration:none;color:#51434a!important;font-size:14px;font-weight:700;padding:0 1px;transition:color .18s ease}
+.flora-site-header .main-nav a::after{content:"";position:absolute;bottom:1px;inset-inline:0;height:2px;border-radius:99px;background:var(--flora-brand);transform:scaleX(0);transform-origin:center;transition:transform .18s ease}
+.flora-site-header .main-nav a:hover,.flora-site-header .main-nav a.active,.flora-site-header .main-nav a[aria-current="page"]{color:var(--flora-brand)!important}
+.flora-site-header .main-nav a:hover::after,.flora-site-header .main-nav a.active::after,.flora-site-header .main-nav a[aria-current="page"]::after{transform:scaleX(1)}
+.flora-header-actions{display:flex;align-items:center;justify-content:flex-end;gap:9px}
+.flora-site-header .flora-icon-button{position:relative;display:inline-flex;align-items:center;justify-content:center;flex:0 0 40px;width:40px;height:40px;padding:0;border:1px solid #f0e4e8;border-radius:14px;background:#fff;color:var(--flora-brand-dark);text-decoration:none;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.flora-site-header .flora-icon-button:hover{background:var(--flora-brand-soft);border-color:#e6c4cf;transform:translateY(-1px)}
+.flora-site-header .flora-icon-button svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.flora-site-header .cart-count{top:-5px;inset-inline-end:-5px;left:auto;min-width:18px;height:18px;padding:0 4px;background:var(--flora-brand);font-size:10px;border:2px solid #fff}
+.flora-site-header [hidden]{display:none!important}
+@media(max-width:1000px){.flora-header-inner{grid-template-columns:160px minmax(0,1fr) 132px;gap:12px}.flora-site-header .flora-logo img{max-width:158px}.flora-site-header .main-nav{gap:12px}.flora-site-header .main-nav a{font-size:13px}}
+@media(max-width:760px){.flora-header-inner{width:94%;min-height:auto;grid-template-columns:minmax(0,1fr) auto;gap:6px 10px;padding:9px 0 7px}.flora-site-header .flora-logo img{height:46px;width:145px;object-position:right center}.flora-header-actions{grid-column:2;grid-row:1;gap:6px}.flora-site-header .flora-icon-button{flex-basis:36px;width:36px;height:36px;border-radius:12px}.flora-site-header .flora-icon-button svg{width:18px;height:18px}.flora-site-header .main-nav{grid-column:1/-1;grid-row:2;justify-content:flex-start;gap:clamp(17px,4.5vw,30px);overflow-x:auto;overflow-y:hidden;scrollbar-width:none;padding:2px 1px 4px;overscroll-behavior-x:contain}.flora-site-header .main-nav::-webkit-scrollbar{display:none}.flora-site-header .main-nav a{min-height:34px;font-size:13px;flex:0 0 auto}}
+@media(max-width:380px){.flora-site-header .flora-logo img{width:126px;height:42px}.flora-header-actions{gap:4px}.flora-site-header .flora-icon-button{width:33px;height:33px;flex-basis:33px}.flora-site-header .main-nav{gap:16px}.flora-site-header .main-nav a{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.flora-site-header *{transition:none!important}}

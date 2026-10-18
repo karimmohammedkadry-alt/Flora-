@@ -5,9 +5,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const money = value => `${Number(value || 0).toLocaleString("ar-EG")} جنيه`;
   const imageUrl = path => {
-    if (!path) return "../assets/product-1.jpg";
-    if (/^https?:\/\//i.test(path)) return path;
-    return new URL(path, window.location.href).href;
+    const fallback = new URL("../assets/product-1.jpg", window.location.href).href;
+    try {
+      const url = new URL(String(path || "../assets/product-1.jpg"), window.location.href);
+      return ["https:", "http:"].includes(url.protocol) ? url.href : fallback;
+    } catch (_) { return fallback; }
   };
   const escapeHtml = value => String(value ?? "").replace(/[&<>'"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));
 
@@ -16,6 +18,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   const categoryAliases = { plain: "سادة", printed: "مشجر", chiffon: "شيفون", modal: "مودال" };
   let selectedCategory = categoryAliases[params.get("category")] || params.get("category") || "all";
   let searchTerm = (params.get("q") || "").trim();
+  let sortMode = "default";
+  const searchInput = document.getElementById("shopSearch");
+  const sortInput = document.getElementById("shopSort");
+  const resultCount = document.getElementById("shopResultCount");
+  if (searchInput) searchInput.value = searchTerm;
+
+  const normalize = value => String(value ?? "").normalize("NFKC").toLocaleLowerCase("ar").replace(/[\u064B-\u065F\u0670]/g, "").trim();
 
   function buildCategories() {
     const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
@@ -32,10 +41,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   function render() {
     const visible = products.filter(p => {
       const categoryMatch = selectedCategory === "all" || p.category === selectedCategory;
-      const haystack = `${p.name || ""} ${p.category || ""} ${p.color_name || ""}`.toLocaleLowerCase("ar");
-      const searchMatch = !searchTerm || haystack.includes(searchTerm.toLocaleLowerCase("ar"));
+      const haystack = normalize(`${p.name || ""} ${p.category || ""} ${p.color_name || ""} ${p.description || ""}`);
+      const searchMatch = !normalize(searchTerm) || haystack.includes(normalize(searchTerm));
       return categoryMatch && searchMatch;
     });
+    if (sortMode === "price-asc") visible.sort((a,b) => Number(a.price) - Number(b.price));
+    else if (sortMode === "price-desc") visible.sort((a,b) => Number(b.price) - Number(a.price));
+    else if (sortMode === "name") visible.sort((a,b) => String(a.name || "").localeCompare(String(b.name || ""), "ar"));
+    else if (sortMode === "stock") visible.sort((a,b) => Number(b.stock_quantity || 0) - Number(a.stock_quantity || 0));
+    if (resultCount) resultCount.textContent = `عدد المنتجات: ${visible.length}`;
     if (!visible.length) {
       productsEl.innerHTML = '<div class="products-state">لا توجد منتجات مطابقة للبحث أو التصنيف.</div>';
       return;
@@ -67,6 +81,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }));
   }
+
+  searchInput?.addEventListener("input", () => { searchTerm = searchInput.value.trim(); render(); });
+  sortInput?.addEventListener("change", () => { sortMode = sortInput.value; render(); });
 
   try {
     const sb = await FloraSupabase.init();

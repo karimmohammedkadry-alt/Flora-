@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 190" role="img" aria-labelledby="title desc">
+<title id="title">Flora Fashion Hijab</title><desc id="desc">Flora Fashion Hijab modern floral brand mark</desc>
+<g fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M70 95 C48 66 63 36 91 29 C111 24 128 38 130 57 C132 76 119 89 104 99 C94 106 89 119 91 132" stroke="#9e536b" stroke-width="8"/>
+  <path d="M93 118 C119 101 142 104 151 123 C135 126 122 139 118 155 C102 150 94 136 93 118Z" fill="#c67e91" stroke="#9e536b" stroke-width="3"/>
+  <path d="M93 117 C74 108 61 91 65 74 C82 79 94 91 100 106" fill="#e5b7c1" stroke="#9e536b" stroke-width="3"/>
+  <path d="M103 60 C90 48 93 31 107 22 C118 38 118 49 103 60Z" fill="#dca2b1" stroke="#9e536b" stroke-width="3"/>
+  <path d="M104 99 C122 78 143 75 157 88 C144 103 126 110 104 99Z" fill="#e9c5ce" stroke="#9e536b" stroke-width="3"/>
+  <path d="M92 131 C72 139 61 154 65 169 C84 163 96 150 92 131Z" fill="#c67e91" stroke="#9e536b" stroke-width="3"/>
+  <path d="M96 102 C108 90 115 75 112 59" stroke="#6c3548" stroke-width="3"/>
+</g>
+<text x="195" y="105" font-family="Georgia, 'Times New Roman', serif" font-size="82" letter-spacing="1" fill="#6c3548">Flora</text>
+<path d="M198 121 H440" stroke="#c67e91" stroke-width="2"/>
+<text x="200" y="151" font-family="Arial, Helvetica, sans-serif" font-size="20" letter-spacing="7" fill="#8e5968">FASHION HIJAB</text>
+</svg>

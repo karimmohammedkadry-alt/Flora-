@@ -4,9 +4,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const money = value => `${Number(value || 0).toLocaleString("ar-EG")} جنيه`;
   const imageUrl = path => {
-    if (!path) return "../assets/product-1.jpg";
-    if (/^https?:\/\//i.test(path)) return path;
-    return new URL(path, window.location.href).href;
+    const fallback = new URL("../assets/product-1.jpg", window.location.href).href;
+    try {
+      const url = new URL(String(path || "../assets/product-1.jpg"), window.location.href);
+      return ["https:", "http:"].includes(url.protocol) ? url.href : fallback;
+    } catch (_) { return fallback; }
   };
   const escapeHtml = value => String(value ?? "").replace(/[&<>'"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));
 

@@ -9,8 +9,8 @@
 <meta name="description" content="تصفح منتجات Flora Fashion Hijab وابحث عن الحجاب والألوان والتصنيفات.">
 <link href="../css/common.css" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../js/supabase-config.js"></script>
-<script src="../js/production-config.js"></script>
+<script src="../../Shared/supabase-config.js"></script>
+<script src="../../Shared/production-config.js"></script>
 <link href="../css/shop.css" rel="stylesheet"/>
 </head>
 <body>
@@ -50,6 +50,20 @@
 </section>
 <!-- ================= SHOP ================= -->
 <section class="shop-section">
+<!-- Search and sorting -->
+<div class="shop-tools" role="search" aria-label="البحث في المنتجات">
+  <label class="shop-search-label" for="shopSearch">ابحثي عن منتج</label>
+  <input id="shopSearch" type="search" inputmode="search" autocomplete="off" placeholder="اسم الحجاب أو اللون أو التصنيف…" aria-controls="shopProducts">
+  <label class="shop-sort-label" for="shopSort">ترتيب حسب</label>
+  <select id="shopSort" aria-label="ترتيب المنتجات">
+    <option value="default">الترتيب الافتراضي</option>
+    <option value="price-asc">السعر: من الأقل للأعلى</option>
+    <option value="price-desc">السعر: من الأعلى للأقل</option>
+    <option value="name">الاسم: أبجديًا</option>
+    <option value="stock">المتاح أولًا</option>
+  </select>
+  <span id="shopResultCount" class="shop-result-count" aria-live="polite"></span>
+</div>
 <!-- Categories -->
 <div class="categories-bar" id="categoriesBar"><button class="category-filter active" data-category="all" type="button">الكل</button></div>
 

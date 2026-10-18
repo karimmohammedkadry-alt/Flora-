@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>تفاصيل الطلب | Flora Fashion Hijab</title>
+<meta name="robots" content="index,follow">
+<meta name="description" content="تابع تفاصيل وحالة طلبك من Flora Fashion Hijab.">
+<link href="../css/common.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../Shared/frontend/js/supabase-config.js"></script>
+<script src="../../../Shared/frontend/js/production-config.js"></script>
+<link href="../css/order-details.css" rel="stylesheet"/>
+</head>
+<body>
+<header class="flora-site-header">
+  <div class="flora-header-inner">
+    <a class="flora-logo" href="home.html" aria-label="Flora Fashion Hijab - الرئيسية"><img src="../images/logo.svg" alt="Flora Fashion Hijab" width="208" height="76"></a>
+    <nav class="main-nav" aria-label="التنقل الرئيسي">
+      <a href="home.html">الرئيسية</a><a href="shop.html">المتجر</a><a href="about.html">من نحن</a><a href="contact.html">اتصل بنا</a><a href="orders.html">طلباتي</a><a href="account.html">حسابي</a>
+    </nav>
+    <div class="flora-header-actions">
+      <button class="search-button flora-icon-button" type="button" aria-label="البحث عن منتج" title="بحث"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.7"/><path d="m16 16 4.5 4.5"/></svg></button>
+      <a class="flora-icon-button flora-account-shortcut" href="account.html" aria-label="تسجيل الدخول أو إنشاء حساب" title="حسابي"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.8 20c.5-4 3.2-6.1 7.2-6.1s6.7 2.1 7.2 6.1"/></svg></a>
+      <a class="flora-icon-button cart-button" href="cart.html" aria-label="سلة المشتريات" title="سلة المشتريات"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.1 11.1a2 2 0 0 0 2 1.6h8.7a2 2 0 0 0 1.9-1.5L21 8H6"/><circle cx="9.5" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg><span class="cart-count" data-cart-count="0">0</span></a>
+    </div>
+  </div>
+</header>
+<main class="container">
+<!-- حالة عدم وجود الطلب -->
+<section class="not-found hidden" id="notFound">
+<div class="not-found-icon">!</div>
+<h2>الطلب غير موجود</h2>
+<p>
+        عذراً، لم نتمكن من العثور على هذا الطلب.
+      </p>
+<div class="not-found-actions">
+<a class="btn primary" href="orders.html">العودة للطلبات</a>
+<a class="btn secondary" href="shop.html">تصفح المنتجات</a>
+</div>
+</section>
+<!-- تفاصيل الطلب -->
+<section class="order-content hidden" id="orderContent">
+<!-- رأس الطلب -->
+<div class="order-header card">
+<div>
+<span class="label">رقم الطلب</span>
+<h2 id="orderId">---</h2>
+</div>
+<div class="order-date">
+<span class="label">تاريخ الطلب</span>
+<strong id="orderDate">---</strong>
+</div>
+</div>
+<!-- حالة الطلب -->
+<div class="card status-card">
+<div class="section-title">
+<h2>حالة الطلب</h2>
+<span class="status-badge" id="statusBadge">---</span>
+</div>
+<div class="timeline" id="timeline"></div>
+</div>
+<!-- المنتجات -->
+<div class="card">
+<div class="section-title">
+<h2>المنتجات</h2>
+<span id="itemsCount">0 منتجات</span>
+</div>
+<div class="products-list" id="productsList"></div>
+</div>
+<div class="two-columns">
+<!-- بيانات التوصيل -->
+<div class="card">
+<div class="section-title">
+<h2>بيانات التوصيل</h2>
+</div>
+<div class="info-list">
+<div class="info-row">
+<span>الاسم</span>
+<strong id="customerName">---</strong>
+</div>
+<div class="info-row">
+<span>رقم الهاتف</span>
+<strong id="customerPhone">---</strong>
+</div>
+<div class="info-row">
+<span>المحافظة</span>
+<strong id="governorate">---</strong>
+</div>
+<div class="info-row">
+<span>المدينة</span>
+<strong id="city">---</strong>
+</div>
+<div class="info-row address-row">
+<span>العنوان</span>
+<strong id="address">---</strong>
+</div>
+<div class="info-row" id="landmarkRow">
+<span>علامة مميزة</span>
+<strong id="landmark">---</strong>
+</div>
+</div>
+</div>
+<!-- الدفع -->
+<div class="card">
+<div class="section-title">
+<h2>الدفع</h2>
+</div>
+<div class="payment-box">
+<div class="payment-icon">✓</div>
+<div>
+<span>طريقة الدفع</span>
+<strong id="paymentMethod">---</strong>
+</div>
+</div>
+</div>
+</div>
+<!-- ملخص الحساب -->
+<div class="card summary-card">
+<div class="section-title">
+<h2>ملخص الطلب</h2>
+</div>
+<div class="summary-row">
+<span>الإجمالي الفرعي</span>
+<strong id="subtotal">0 ج.م</strong>
+</div>
+<div class="summary-row">
+<span>الشحن</span>
+<strong id="shipping">مجاني</strong>
+</div>
+<div class="summary-divider"></div>
+<div class="summary-row total-row">
+<span>الإجمالي</span>
+<strong id="total">0 ج.م</strong>
+</div>
+</div>
+<div class="bottom-actions">
+<a class="btn secondary" href="orders.html">
+          العودة للطلبات
+        </a>
+<a class="btn primary" href="shop.html">
+          متابعة التسوق
+        </a>
+</div>
+</section>
+</main>
+<script src="../js/ui.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/order-details.js"></script>
+</body>
+</html>

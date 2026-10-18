@@ -1,6 +1,11 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const id = new URLSearchParams(location.search).get("id");
   const set=(id,v)=>document.getElementById(id)?.replaceChildren(String(v ?? ""));
+  const safeImageUrl = value => {
+    const fallback = new URL("../assets/product-1.jpg", window.location.href).href;
+    try { const url = new URL(String(value || "../assets/product-1.jpg"), window.location.href); return ["https:", "http:"].includes(url.protocol) ? url.href : fallback; }
+    catch (_) { return fallback; }
+  };
   if (!id) {
     document.getElementById("orderContent")?.classList.add("hidden");
     document.getElementById("notFound")?.classList.remove("hidden");
@@ -22,7 +27,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       products.innerHTML="";
       (o.order_items||[]).forEach(i=>{
         const el=document.createElement("div");el.className="order-product";
-        el.innerHTML=`<img src="${i.image_path||"../assets/product-1.jpg"}" alt=""><div><strong></strong><span></span></div><b>${Number(i.line_total).toLocaleString("ar-EG")} ج.م</b>`;
+        el.innerHTML=`<img alt=""><div><strong></strong><span></span></div><b>${Number(i.line_total).toLocaleString("ar-EG")} ج.م</b>`;
+        el.querySelector("img").src=safeImageUrl(i.image_path);
         el.querySelector("strong").textContent=i.product_name;
         el.querySelector("span").textContent=`${i.color_name||""} × ${i.quantity}`;
         products.appendChild(el);

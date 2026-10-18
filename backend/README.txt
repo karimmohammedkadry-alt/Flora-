@@ -1,0 +1,1 @@
+Store backend integration uses the shared Supabase project. Database schema, RLS policies, Storage policies, and Edge Functions are maintained under ../../Backend/supabase. Do not copy secrets into frontend files.

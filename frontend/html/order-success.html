@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>تم تأكيد الطلب | Flora Fashion Hijab</title>
+<meta name="robots" content="index,follow">
+<meta name="description" content="تم استلام طلبك من Flora Fashion Hijab بنجاح.">
+<link href="../css/common.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../../Shared/frontend/js/supabase-config.js"></script>
+<script src="../../../Shared/frontend/js/production-config.js"></script>
+<link href="../css/order-success.css" rel="stylesheet"/>
+</head>
+<body>
+<header class="flora-site-header">
+  <div class="flora-header-inner">
+    <a class="flora-logo" href="home.html" aria-label="Flora Fashion Hijab - الرئيسية"><img src="../images/logo.svg" alt="Flora Fashion Hijab" width="208" height="76"></a>
+    <nav class="main-nav" aria-label="التنقل الرئيسي">
+      <a href="home.html">الرئيسية</a><a href="shop.html">المتجر</a><a href="about.html">من نحن</a><a href="contact.html">اتصل بنا</a><a href="orders.html">طلباتي</a><a href="account.html">حسابي</a>
+    </nav>
+    <div class="flora-header-actions">
+      <button class="search-button flora-icon-button" type="button" aria-label="البحث عن منتج" title="بحث"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.7"/><path d="m16 16 4.5 4.5"/></svg></button>
+      <a class="flora-icon-button flora-account-shortcut" href="account.html" aria-label="تسجيل الدخول أو إنشاء حساب" title="حسابي"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.8 20c.5-4 3.2-6.1 7.2-6.1s6.7 2.1 7.2 6.1"/></svg></a>
+      <a class="flora-icon-button cart-button" href="cart.html" aria-label="سلة المشتريات" title="سلة المشتريات"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.1 11.1a2 2 0 0 0 2 1.6h8.7a2 2 0 0 0 1.9-1.5L21 8H6"/><circle cx="9.5" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg><span class="cart-count" data-cart-count="0">0</span></a>
+    </div>
+  </div>
+</header>
+<main class="success-page">
+<div class="container">
+<section class="success-card">
+<div class="success-icon">
+                ✓
+            </div>
+<span class="success-label">
+                FLORA FASHION HIJAB
+            </span>
+<h1>
+                تم استلام طلبك
+            </h1>
+<p class="success-text">
+                شكرًا لك! طلبك وصلنا وهو الآن قيد المراجعة. هنحدّثك بمجرد تأكيد الطلب.
+            </p>
+<section class="receipt-scene" aria-label="إيصال الطلب">
+  <div class="receipt-printer"><span></span><i></i></div>
+  <article class="receipt-paper" id="orderReceipt">
+    <div class="receipt-logo">FLORA <span>FASHION HIJAB</span></div><p class="receipt-tagline">أناقة بسيطة تبدأ من اختيارك</p>
+    <div class="receipt-rule"></div><div class="receipt-state"><span class="receipt-check">✓</span><strong>تم استلام طلبك</strong></div>
+    <div class="receipt-meta"><span>رقم الطلب</span><strong id="receiptOrderNumber">—</strong></div>
+    <div class="receipt-meta"><span>التاريخ</span><strong id="receiptDate">—</strong></div>
+    <div class="receipt-rule dashed"></div><div class="receipt-items-head"><span>المنتج</span><span>الإجمالي</span></div>
+    <div id="receiptItems" class="receipt-items"><div class="receipt-loading">جاري تجهيز الإيصال…</div></div>
+    <div class="receipt-rule dashed"></div><div class="receipt-total"><span>الإجمالي</span><strong id="receiptTotal">0 ج.م</strong></div>
+    <div class="receipt-meta"><span>الدفع</span><strong>عند الاستلام</strong></div>
+    <div class="receipt-meta"><span>حالة الطلب</span><strong id="receiptStatus">قيد المراجعة</strong></div>
+    <div class="receipt-barcode" aria-hidden="true"></div><div class="receipt-barcode-number" id="receiptBarcodeNumber">FLORA</div>
+    <p class="receipt-thanks">شكرًا لثقتك في Flora 🌿</p>
+  </article>
+  <button type="button" id="printReceipt" class="receipt-print-btn">▤ طباعة / حفظ الإيصال</button>
+</section>
+<div class="order-number-box">
+<span>
+                    رقم الطلب
+                </span>
+<strong id="orderId">
+                    FL-00000000
+                </strong>
+</div>
+<div class="order-info">
+<div class="info-item">
+<span>
+                        حالة الطلب
+                    </span>
+<strong class="status">
+                        تم استلام الطلب
+                    </strong>
+</div>
+<div class="info-item">
+<span>
+                        طريقة الدفع
+                    </span>
+<strong id="paymentMethod">
+                        الدفع عند الاستلام
+                    </strong>
+</div>
+<div class="info-item">
+<span>
+                        إجمالي الطلب
+                    </span>
+<strong>
+<span id="orderTotal">0</span>
+                        ج.م
+                    </strong>
+</div>
+</div>
+<div class="customer-box">
+<h2>
+                    بيانات التوصيل
+                </h2>
+<div class="customer-row">
+<span>الاسم</span>
+<strong id="customerName">-</strong>
+</div>
+<div class="customer-row">
+<span>الهاتف</span>
+<strong id="customerPhone">-</strong>
+</div>
+<div class="customer-row">
+<span>العنوان</span>
+<strong id="customerAddress">-</strong>
+</div>
+</div>
+<div class="success-actions">
+<a class="primary-btn" href="order-details.html" id="detailsBtn">
+                    تفاصيل الطلب
+                </a>
+<a class="secondary-btn" href="shop.html">
+                    متابعة التسوق
+                </a>
+<a class="secondary-btn" href="orders.html">
+                    طلباتي
+                </a>
+</div>
+</section>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container footer-content">
+<div>
+<h3>
+                Flora Fashion Hijab
+            </h3>
+<p>
+                أناقة بسيطة تبدأ من اختيارك.
+            </p>
+</div>
+<div class="footer-links">
+<a href="home.html">
+                الرئيسية
+            </a>
+<a href="shop.html">
+                المتجر
+            </a>
+<a href="orders.html">
+                طلباتي
+            </a>
+</div>
+</div>
+<div class="footer-bottom">
+        © 2026 Flora Fashion Hijab
+    </div>
+</footer>
+<script src="../js/ui.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/order-success.js"></script>
+</body>
+</html>

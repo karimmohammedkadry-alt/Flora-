@@ -1,11 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-
-    const loadingTime = 2700;
-
-    setTimeout(() => {
-
-        window.location.href = "pages/home.html";
-
-    }, loadingTime);
-
+  // Keep the branded splash visible for exactly 1000 ms.
+  window.setTimeout(() => {
+    window.location.replace("pages/home.html");
+  }, 1000);
 });
