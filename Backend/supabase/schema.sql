@@ -22,7 +22,8 @@ create table if not exists public.products (
   stock_quantity integer not null default 0 check (stock_quantity >= 0),
   featured boolean not null default false,
   sort_order integer not null default 0,
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create table if not exists public.cart_items (
@@ -72,6 +73,7 @@ create table if not exists public.contact_messages (
   name text not null,
   phone text,
   message text not null,
+  status text not null default 'new' check (status in ('new','read','resolved')),
   created_at timestamptz not null default now()
 );
 
@@ -91,6 +93,7 @@ alter table public.products add column if not exists stock_quantity integer defa
 alter table public.products add column if not exists featured boolean default false;
 alter table public.products add column if not exists sort_order integer default 0;
 alter table public.products add column if not exists created_at timestamptz default now();
+alter table public.products add column if not exists updated_at timestamptz default now();
 
 alter table public.cart_items add column if not exists user_id uuid;
 alter table public.cart_items add column if not exists product_id bigint;
@@ -129,6 +132,7 @@ alter table public.contact_messages add column if not exists name text;
 alter table public.contact_messages add column if not exists phone text;
 alter table public.contact_messages add column if not exists message text;
 alter table public.contact_messages add column if not exists created_at timestamptz default now();
+alter table public.contact_messages add column if not exists status text not null default 'new';
 
 -- =========================================================
 -- 3) VALIDATE critical column types before continuing
@@ -205,6 +209,9 @@ $$;
 
 drop trigger if exists cart_items_updated_at on public.cart_items;
 create trigger cart_items_updated_at before update on public.cart_items
+for each row execute function public.set_updated_at();
+drop trigger if exists products_updated_at on public.products;
+create trigger products_updated_at before update on public.products
 for each row execute function public.set_updated_at();
 
 -- =========================================================
@@ -405,9 +412,3 @@ where tc.constraint_type='FOREIGN KEY'
   and tc.table_name in ('products','cart_items','orders','order_items','contact_messages')
 order by tc.table_name, kcu.column_name;
 
--- =========================================================
--- 10) OPTIONAL STORE RESET - RUN THIS ONLY WHEN YOU WANT A CLEAN STORE
--- It deletes store business data and demo products.
--- It does NOT delete auth.users / Anonymous Auth accounts.
--- =========================================================
--- truncate table public.contact_messages, public.order_items, public.orders, public.cart_items, public.products restart identity cascade;

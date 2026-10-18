@@ -1,0 +1,47 @@
+FLORA FASHION HIJAB — STATIC AUDIT REPORT
+========================================
+
+Structure
+---------
+Store/frontend/html: 12 storefront HTML pages
+Store/frontend/css: 13 CSS files including the splash page stylesheet
+Store/frontend/js: 13 JavaScript files including the splash page script
+Store/frontend/images: local logo, splash, product, and promotional images
+Dashboard/frontend/html: admin dashboard HTML
+Dashboard/frontend/css: dashboard stylesheet
+Dashboard/frontend/js: dashboard JavaScript
+Shared/frontend/js: shared Supabase and production configuration
+Backend/supabase: SQL schema/migrations, Storage policies, and Edge Functions
+Backend/firebase: reserved server-side integration location; no private credentials included
+AdminApp: Flutter/Dart code, pubspec, Firebase Android client config, and PowerShell build scripts
+
+Checks performed in the available environment
+---------------------------------------------
+- ZIP extraction and project file inventory reviewed.
+- 13 HTML files checked for missing local src/href references.
+- 14 CSS files checked for missing local url(...) assets.
+- 16 JavaScript files passed Node.js syntax checks.
+- vercel.json and google-services.json parsed as valid JSON.
+- Old Store/assets, Store/css, Store/js, Store/pages, and old Dashboard script path references were not found in the front-end sources.
+- No service-role key or Firebase Admin private-key material was found in the source scan. The Firebase Android client API key is present in google-services.json as expected; configure API restrictions in Firebase/Google Cloud.
+
+Not verified here
+-----------------
+- Flutter/Dart analysis, Flutter tests, Gradle build, APK generation, device installation, and push notification delivery could not be run because Flutter, Dart, PowerShell, and Android SDK are not installed in the audit environment.
+- The archive contains google-services.json but not the generated Android Gradle wrapper/Manifest/MainActivity scaffolding. Run AdminApp/repair_android_gradle.ps1 on a machine with Flutter installed; the script generates missing platform scaffolding and aligns the Android package before build.
+- Supabase database migrations, RLS policies, Storage upload, and Edge Functions were not run against the live project. Review and apply migrations deliberately.
+
+Important safety note
+--------------------
+Backend/supabase/reset_store_data.sql is retained because its purpose cannot be safely inferred as unused. It may delete data; do not run it against production without a verified backup and explicit intent.
+
+
+Dashboard loading + page entrypoint update (v5)
+- Added loading.html/css/js as dashboard entry screen.
+- Added separate overview/products/orders/messages/account HTML/CSS/JS entry files. These route into the shared dashboard shell to preserve authenticated state and dialogs.
+- Removed visible login/setup forms from the normal no-session experience; unauthenticated access shows a protected access gate.
+- Existing Edge Function authorization remains required; a trusted host-level access gateway/session bootstrap must be configured for truly passwordless admin entry.
+- Static checks do not constitute a live deployment or Supabase integration test.
+
+
+Dashboard page split v6: see DASHBOARD_REFACTOR_REPORT_AR.txt.

@@ -2,31 +2,51 @@
   "rewrites": [
     {
       "source": "/dashboard",
-      "destination": "/Dashboard/index.html"
+      "destination": "/Dashboard/frontend/html/loading.html"
+    },
+    {
+      "source": "/dashboard/overview",
+      "destination": "/Dashboard/frontend/html/overview.html"
+    },
+    {
+      "source": "/dashboard/products",
+      "destination": "/Dashboard/frontend/html/products.html"
+    },
+    {
+      "source": "/dashboard/orders",
+      "destination": "/Dashboard/frontend/html/orders.html"
+    },
+    {
+      "source": "/dashboard/messages",
+      "destination": "/Dashboard/frontend/html/messages.html"
+    },
+    {
+      "source": "/dashboard/account",
+      "destination": "/Dashboard/frontend/html/account.html"
     },
     {
       "source": "/dashboard/:path*",
       "destination": "/Dashboard/:path*"
     },
     {
-      "source": "/Shared/:path*",
-      "destination": "/Shared/:path*"
-    },
-    {
       "source": "/assets/:path*",
-      "destination": "/Store/assets/:path*"
+      "destination": "/Store/frontend/images/:path*"
     },
     {
       "source": "/css/:path*",
-      "destination": "/Store/css/:path*"
+      "destination": "/Store/frontend/css/:path*"
     },
     {
       "source": "/js/:path*",
-      "destination": "/Store/js/:path*"
+      "destination": "/Store/frontend/js/:path*"
+    },
+    {
+      "source": "/images/:path*",
+      "destination": "/Store/frontend/images/:path*"
     },
     {
       "source": "/pages/:path*",
-      "destination": "/Store/pages/:path*"
+      "destination": "/Store/frontend/html/:path*"
     },
     {
       "source": "/",

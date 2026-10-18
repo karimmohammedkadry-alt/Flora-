@@ -1,0 +1,23 @@
+Flora Fashion Hijab — إعداد قاعدة البيانات
+
+1) افتح Supabase Dashboard للمشروع الصحيح.
+2) افتح SQL Editor ثم New query.
+3) افتح الملف FLORA_ONE_RUN_SETUP_AND_CHECK.sql وانسخ محتواه بالكامل.
+4) نفّذ Run مرة واحدة وانتظر ظهور نتائج التحقق في آخر الملف. يمكن إعادة تشغيله عند الحاجة.
+5) لا تشغّل reset_store_data.sql؛ هذا الملف منفصل وقد يمسح بيانات المتجر.
+
+مهم: SQL يجهز الجداول والسياسات وStorage، لكنه لا ينشر Edge Functions ولا يضبط أسرارها.
+لازم تكون Edge Function flora-admin منشورة، ومضبوطة بها الأسرار التالية من Supabase Edge Function Secrets:
+- SUPABASE_URL (عادة يوفّرها Supabase تلقائيًا)
+- SUPABASE_SERVICE_ROLE_KEY (سر خادم فقط، لا تضعه في ملفات الموقع)
+- FLORA_DASHBOARD_EDIT_SECRET (قيمة طويلة عشوائية لا تقل عن 32 حرفًا)
+- FLORA_DASHBOARD_ORIGIN (رابط الداشبورد المنشور بدون / في النهاية)
+
+تفعيل Email OTP وAnonymous Sign-ins من Authentication > Providers مطلوب للسلة وتأكيد البريد عند الطلب.
+السكريبت لا يحذف بياناتك ولا ينشئ منتجات تجريبية.
+
+
+خطوة نشر صغيرة مطلوبة لأن قاعدة البيانات وحدها لا تنشر كود الخادم:
+- بعد تنفيذ SQL، افتح PowerShell من مجلد Backend\supabase داخل المشروع.
+- شغّل: powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\deploy_live_products.ps1
+- يلزم وجود Supabase CLI وتسجيل الدخول مسبقًا. اكتب رابط موقعك المنشور عندما يُطلب منك، ثم احتفظ برمز الإدارة الذي يظهر في النهاية.

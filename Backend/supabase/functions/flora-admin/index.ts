@@ -5,7 +5,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 const configuredDashboardOrigin = (Deno.env.get("FLORA_DASHBOARD_ORIGIN") || "").trim().replace(/\/$/, "");
 const baseCorsHeaders = {
   "Vary": "Origin",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-flora-dashboard-key",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Cache-Control": "no-store",
 };
@@ -25,6 +25,106 @@ if (!serviceKey || !supabaseUrl) console.error("Missing Supabase function enviro
 
 const admin = createClient(supabaseUrl!, serviceKey!, { auth: { persistSession: false, autoRefreshToken: false } });
 const publicAuth = publicAuthKey ? createClient(supabaseUrl!, publicAuthKey, { auth: { persistSession: false, autoRefreshToken: false } }) : null;
+
+
+// Optional dashboard editing key: configured ONLY as a Supabase Edge Function secret.
+// This allows the dashboard to omit a login page while keeping writes server-authorized.
+const dashboardEditSecret = Deno.env.get("FLORA_DASHBOARD_EDIT_SECRET") || "";
+function constantTimeEqual(a: string, b: string) {
+  if (!a || !b || a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+function dashboardKeyOk(req: Request) {
+  const supplied = req.headers.get("x-flora-dashboard-key") || "";
+  return dashboardEditSecret.length >= 32 && constantTimeEqual(supplied, dashboardEditSecret);
+}
+async function handleDashboardKeyRequest(req: Request, origin: string) {
+  if (!dashboardEditSecret || dashboardEditSecret.length < 32) {
+    return json({ error: "لم يتم إعداد رمز إدارة المنتجات في أسرار Supabase. راجع دليل الربط." }, 503, origin);
+  }
+  if (!dashboardKeyOk(req)) return json({ error: "رمز الإدارة غير صحيح. أعد إدخاله وحاول مرة أخرى." }, 401, origin);
+
+  const contentType = req.headers.get("content-type") || "";
+  if (contentType.includes("multipart/form-data")) {
+    const form = await req.formData();
+    const file = form.get("file");
+    if (!(file instanceof File)) return json({ error: "ملف الصورة غير موجود." }, 400, origin);
+    const allowed = new Set(["image/jpeg", "image/png", "image/webp", "image/avif"]);
+    if (!allowed.has(file.type) || file.size < 1 || file.size > 5 * 1024 * 1024) {
+      return json({ error: "الصورة لازم تكون JPG أو PNG أو WebP أو AVIF وبحد أقصى 5 ميجابايت." }, 400, origin);
+    }
+    const extByType: Record<string, string> = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "image/avif": "avif" };
+    const path = `${crypto.randomUUID()}.${extByType[file.type]}`;
+    const bytes = await file.arrayBuffer();
+    const { error } = await admin.storage.from("product-images").upload(path, bytes, { contentType: file.type, upsert: false });
+    if (error) {
+      console.error("Dashboard image upload failed", error.message);
+      return json({ error: "تعذر رفع الصورة. تأكد من وجود bucket باسم product-images." }, 400, origin);
+    }
+    const { data } = admin.storage.from("product-images").getPublicUrl(path);
+    return json({ ok: true, path, publicUrl: data.publicUrl }, 200, origin);
+  }
+
+  const body = await req.json();
+  const action = String(body?.action || "");
+  const payload = body?.payload || {};
+  try {
+    if (action === "products_list") {
+      const { data, error } = await admin.from("products").select("id,name,category,price,image_path,description,color_name,color_hex,group_key,active,stock_quantity,featured,sort_order,created_at,updated_at").order("sort_order", { ascending: true }).order("created_at", { ascending: false });
+      if (error) throw error;
+      return json({ ok: true, products: data || [] }, 200, origin);
+    }
+    if (action === "product_upsert") {
+      const source = payload?.data && typeof payload.data === "object" ? payload.data : payload;
+      const rawId = source?.id;
+      const id = rawId == null || rawId === "" ? null : Number(rawId);
+      if (id !== null && (!Number.isSafeInteger(id) || id <= 0)) throw new Error("رقم المنتج غير صالح.");
+      const name = String(source?.name ?? "").trim();
+      const category = String(source?.category ?? "").trim();
+      const price = Number(source?.price);
+      const stock = Number(source?.stock_quantity ?? 0);
+      const colorName = String(source?.color_name ?? "أساسي").trim() || "أساسي";
+      const groupKey = String(source?.group_key ?? category).trim() || category;
+      if (!name || !category || !Number.isFinite(price) || price < 0 || !Number.isInteger(stock) || stock < 0 || !groupKey) throw new Error("راجع اسم المنتج والتصنيف والسعر والمخزون.");
+      const fields = { name, category, price, stock_quantity: stock, color_name: colorName, color_hex: source?.color_hex ? String(source.color_hex).trim() : null, group_key: groupKey, image_path: source?.image_path ?? null, description: source?.description ? String(source.description).trim() : null, active: source?.active !== false, featured: source?.featured === true, sort_order: Number.isInteger(Number(source?.sort_order)) ? Number(source.sort_order) : 0 };
+      const query = id ? admin.from("products").update(fields).eq("id", id).select("*").maybeSingle() : admin.from("products").insert(fields).select("*").single();
+      const { data, error } = await query;
+      if (error) throw error;
+      if (!data) throw new Error("المنتج غير موجود أو لم يتم حفظ التغييرات.");
+      return json({ ok: true, product: data }, 200, origin);
+    }
+    if (action === "product_toggle") {
+      const id = Number(payload?.id);
+      if (!Number.isSafeInteger(id) || id <= 0) throw new Error("رقم المنتج غير صالح.");
+      const { data: product, error: readError } = await admin.from("products").select("active").eq("id", id).single();
+      if (readError) throw readError;
+      const { data, error } = await admin.from("products").update({ active: !product.active }).eq("id", id).select("id,active").single();
+      if (error) throw error;
+      return json({ ok: true, product: data }, 200, origin);
+    }
+    if (action === "product_delete") {
+      const id = Number(payload?.id);
+      if (!Number.isSafeInteger(id) || id <= 0) throw new Error("رقم المنتج غير صالح.");
+      // Archive to preserve order history and foreign-key references.
+      const { data, error } = await admin.from("products").update({ active: false }).eq("id", id).select("id,active").maybeSingle();
+      if (error) throw error;
+      if (!data) throw new Error("المنتج غير موجود.");
+      return json({ ok: true, archived: true, product: data }, 200, origin);
+    }
+    // No-login dashboard mode: the strong server-side edit secret authorizes only these allowlisted actions.
+    const keyAllowedActions = new Set(["bootstrap", "order_detail", "order_status", "message_detail", "message_status"]);
+    if (keyAllowedActions.has(action)) {
+      const result = await handle(action, payload, { id: "dashboard-edit-key", app_metadata: { role: "admin" } });
+      return json(result, 200, origin);
+    }
+    return json({ error: "عملية إدارة غير معروفة." }, 400, origin);
+  } catch (error) {
+    console.error("Dashboard key action failed", error);
+    return json({ error: error instanceof Error ? error.message : "تعذر تنفيذ العملية." }, 400, origin);
+  }
+}
 
 async function loginWithUsername(payload: any) {
   const username = String(payload?.username ?? "").trim().toLowerCase();
@@ -263,6 +363,7 @@ Deno.serve(async (req) => {
   if (origin && (!configuredDashboardOrigin || origin !== configuredDashboardOrigin)) return json({ error: "Origin not allowed" }, 403, origin);
   if (req.method === "OPTIONS") return new Response(null, { status: origin && (!configuredDashboardOrigin || origin !== configuredDashboardOrigin) ? 403 : 204, headers: corsHeadersFor(origin) });
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405, origin);
+  if (req.headers.has("x-flora-dashboard-key")) return await handleDashboardKeyRequest(req, origin);
   try {
     const body = await req.json();
     if (body?.action === "login") {

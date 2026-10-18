@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.flora-order-push]
 verify_jwt = false
+
+[functions.flora-customer-auth]
+verify_jwt = false

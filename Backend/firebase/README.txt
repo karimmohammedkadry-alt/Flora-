@@ -1,0 +1,1 @@
+Place server-side Firebase Admin credentials and server integration here only when needed. Never commit private service-account JSON keys. Android client configuration belongs under AdminApp/android/app/google-services.json.

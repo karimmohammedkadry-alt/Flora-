@@ -3,8 +3,8 @@
 هذه الوثيقة لتجهيز البيئة فقط. لا تضع أسرارًا حقيقية داخل Git أو ملفات الواجهة.
 
 ## 1) إعدادات الواجهة العامة
-- راجع `Shared/supabase-config.js`: المسموح في الواجهة فقط Project URL ومفتاح publishable/anon.
-- لا تضع `service_role` أو أي secret key داخل `Store/` أو `Dashboard/` أو `Shared/`.
+- راجع `Shared/frontend/js/supabase-config.js`: المسموح في الواجهة فقط Project URL ومفتاح publishable/anon.
+- لا تضع `service_role` أو أي secret key داخل `Store/frontend/` أو `Dashboard/frontend/` أو `Shared/frontend/`.
 - اضبط عنوان المتجر والداشبورد الحقيقيين في أسرار Supabase Functions كما هو موضح أدناه.
 
 ## 2) أسرار Edge Functions
