@@ -905,3 +905,12 @@ button {
   .add-to-cart { font-size:12px; padding-inline:6px; }
   .favorite { width:32px; height:32px; top:8px; left:8px; }
 }
+
+
+/* Phase 2: searchable and sortable storefront controls */
+.shop-tools{width:min(920px,100%);margin:0 auto 22px;display:grid;grid-template-columns:auto minmax(180px,1fr) auto minmax(160px,.65fr) auto;align-items:center;gap:10px;padding:14px 16px;border:1px solid var(--border);border-radius:18px;background:#fff;box-shadow:0 8px 24px rgba(20,30,20,.045)}
+.shop-tools label{font-size:13px;font-weight:800;color:var(--black);white-space:nowrap}
+.shop-tools input,.shop-tools select{width:100%;min-width:0;min-height:42px;padding:9px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--black);font:inherit;outline-offset:2px}
+.shop-tools input:focus,.shop-tools select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(64,91,71,.12)}
+.shop-result-count{grid-column:1/-1;color:var(--gray);font-size:12px;text-align:start}
+@media(max-width:760px){.shop-tools{grid-template-columns:1fr 1fr;gap:9px;padding:12px;border-radius:15px}.shop-search-label{grid-column:1/-1}.shop-tools input{grid-column:1/-1}.shop-sort-label{align-self:center}.shop-tools select{grid-column:2;grid-row:3}.shop-result-count{grid-row:4}}
